@@ -1,0 +1,487 @@
+ \chapter{Book: Introducing Game Theory and its Applications}
+
+Most text/math came from \cite{mendelsonGameTheory}. (Introducing Game Theory and its Applications by Elliott Mendelson).
+
+
+\section{Combinatorial Games}
+
+
+\begin{definition}
+A \defStyle{Combinatorial Game} has these properties
+\begin{enumerate}
+	\item Two players
+	\item no random moves
+	\item the game ends in a finite number of moves
+	\item the result of every move by one player is known to the other players
+	\item it is zero-sum. (a win for one player is a loss for the other)
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}(Fundamental theorem for combinatorial games. Zermelo 1912.)
+ In any comb. game, at least one of the players has a non-losing strategy. If draws (zero pass offs) are impossible, it follows that one of the players has a winning strategy.
+\end{theorem}
+
+\begin{proof}
+Main idea: For a contradiction, assume player A and B do not have a non-losing strategy. Will get an infinitely many move game. 
+
+The first move of the game $P_1$ is a non-losing position for A nor B. From this position, it A's turn to move.  1) Any move player A can make form P1 cannot lead to a non-losing position for player A b/c A has no non-losing strategy. 2) There is at least one possible move M leading from P1 to a new position P2 which is not a non-losing position for player B (b/c B has no such strategy).
+
+Repeat for player B. Hence infinite moves.
+\end{proof}
+
+\begin{corollary}
+For a comb. game, if one player X has a non-losing strategy, but has no winning strategy, then the other player Y must have a non-losing strategy.
+
+Consequently, in a comb. game either one player has a winning strategy or both players have a non-losing strategy.
+\end{corollary}
+
+
+\section{Two-person zero-sum games}
+
+Player A has strategies $A_1, \dots, A_m$ and B has $B_1, \dots, B_n$. The pay-off of $(A_j, B_i)$ for player A is $P(A_j,B_i)$ and b/c this is a zero-sum game, the pay-off for player B is $-P(A_j,B_i)$
+
+
+\begin{example}
+An example is worth a thousand words. Here we have a 2x2 game (in general we could have a mxn game). Here the rows are A's strategies and the col. are B's strategies. If A does A2 and B does B1, the A looses 2 units (and B gets 2 units).
+\begin{table}
+\caption{an example}
+\begin{tabular}{c | c | c}
+\toprule 
+  & B1 & B2\\ \hline
+A1  & 2& 0\\ \hline
+A2  & -2 & 4\\ 
+\bottomrule
+\end{tabular}
+\end{table}
+When it is clear, I will only print the matrix of numbers without the header for A's and B's strategies.
+\end{example}
+
+
+
+\begin{example}
+In 1942  in WW2, a Japanese supply convoy was going to sale from Rabaul to Lae. The convoy could use either a northern route with poor visibility or a southern route with clear weather. The American air force knew that the convoy was going to sale. The number of days in which the air force could bomb the convoy depended upon whether the Americans guessed correctly was was given by the following table:
+\begin{table}\caption{WWII Example}
+\begin{tabular}{c | c | c}
+\toprule 
+  & N-J & S-J\\ \hline
+N-USA  & 2 & 2\\ \hline
+S-USA  & 1 & 3\\ 
+\bottomrule
+\end{tabular}
+\end{table}
+\end{example}
+
+
+\begin{definition}
+\defStyle{saddle point} an entry that is the minimum in its row and maximum in its column. 
+
+Remark: So Player A and B would do WORSE if ONLY ONE of them changes their strategy. In the WW2 example, the first 2 is a saddle point. (Bigger numbers are better for player A/USA and are worse for player B/Japan). Not every game has a saddle point. 
+
+Remark: For zero-sum games, we can let $v$ denote THE saddle point value, by the next theorem.
+
+\defStyle{equilibrium pair} is the strategy where the saddle point exist, so it would be (N-USA,N-J) in the WW2 example.
+\end{definition}
+
+
+\begin{theorem} (For zero-sum games)
+1)  If a matrix has saddle points, then all the entries at these points are equal.
+
+2)If (Ai, Bj) and (Ar, Bs) are saddle points, so are (Ai,Bs), and (Ar, Bj).
+\end{theorem}
+
+\begin{proof}
+If they are in the same row/col, then it is clear they are equal. So assume Aij and Ars are saddle points in different rows/cols. B/c Aij is minimal in its row $A_{ij} \leq A_{is}$. B/c Ars is maximal in its column, $A_{is} \leq A_{rs}$. Repeat looking at the col first then row we get $A_{rs} \leq A_{ij}$. Then Aij = Ars.
+
+Because $A_{ij} \leq A_{is} \leq A_{rs} = A_{ij}$, $A_{is}$ is minimal in its row and maximal in its col. Then (Ai, Bs) is a saddle point. The other one follows by symmetry.
+\end{proof}
+
+If a game does not have a saddle point, and one player ALWAYS plans the same strategy, the other player could take advantage of this.
+
+
+\begin{definition}
+\defStyle{Maximin strategy for A} is the row that gives the largest value for $min_j A_{ij}$. So A can BE SURE of winning at least this amount.
+
+\defStyle{Minimax strategy for B} is the col that gives the smallest $max_i A_{ij}$. So B minimizes his losses. 
+\end{definition}
+
+
+
+\begin{theorem} 
+For any matrix, maximin $\leq$ minimax. (A's best $\leq$ B's best)
+\end{theorem}
+
+\begin{proof}
+Every row min is less than any column max. 
+\end{proof}
+
+
+\begin{theorem} 
+For any matrix, maximin = minimax iff the matrix has a saddle point.
+\end{theorem}
+
+\begin{proof} 
+Let u = maximin, v = minimax.
+$\Rightarrow$ Let u be in row i, and v in col j. Then $u \leq A_{ij} \leq v = u$, so Aij is a saddle point (b/c....it's max in the row and min in the col.)
+
+$\Leftarrow$ Let Aij be a saddle point. For any row k, $A_{kj} \leq A_{ij}$ b/c saddle pt. But $A_{kj}$ is larger or equal to then the min element in row k. Thus $A_{ij}$ is the maximin. Likewise for the minimax.
+\end{proof}
+
+\begin{definition}
+If each entry of one row X of a matrix of a game is $\geq$ row Y, then row X is said to \defStyle{dominate} row Y. If every entry of a col V is $leq$ then col W, then col V dominates col W.
+
+Then row Y or col W can be removed from the matrix/game b/c it will NEVER be used by a rational player :0
+\end{definition}
+
+\begin{example}
+We could remove the last column b/c of col 1.
+\[\left(\begin{matrix}
+-4 & 2 & -3\\
+-2&-5&3\\
+-1&0&1
+\end{matrix}\right)\]
+Then we could remove the middle row b/c of row 4
+\[\left(\begin{matrix}
+-4 & 2\\
+-2&-5\\
+-1&0
+\end{matrix}\right)\]
+We could remove the last column and then the first row to get just the matrix [-1]. This gives a (silly) method to finding saddle points.
+\[\left(\begin{matrix}
+-4 & 2\\
+-1&0
+\end{matrix}\right)\]
+\end{example}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mixed Strategies}
+If there are no saddle points, we could put a probability distribution on our finite list of strategies and then the question is what is the best probability distribution (in terms of expected pay out).
+
+Said again, let A have strategies $A_1, \dots A_m$ and likewise for B. Let $x_1 + \dots + x_m = 1$ and $y_1 + \dots y_n = 1$ be non-neg sums. Then Player A plays \defStyle{mixed strategy} $X:=(x_1, \dots, x_m)$, that is, plays strategy $A_i$ with prob. $x_i$. 
+
+The expected pay out is \[P(X,Y):= \sum_{1\leq i \leq m;  \\ 1 \leq j \leq n} c_{ij}x_iy_j\] where $c_{ij}$ is the pay out for A when A does strategy i and B does strategy j. 
+
+\defStyle{Prue Strategies} correspond to mixed strategy $(0, \dots, 0, 1, 0, \dots, 0)$.
+
+
+\begin{theorem} (Von Neumann's Minimax Theorem) Every game has at least one equilibrium pair of mixed strategies
+\end{theorem}
+
+\begin{proof}We well set up the proof using LP later and then call it quits\end{proof}
+
+\begin{definition}
+$(X*,Y*)$ is an equlibrium pair iff
+
+1) $P(X*,Y*) \leq P(X*,Y)$ for every Y for player B
+
+2) $P(X*,Y*) \geq P(X,Y*)$ for every X for player A.
+\end{definition}
+
+
+\begin{theorem} 
+If (X1,Y1) and (X2,Y2) are equlibrium pairs of a game, then \[P(X_1,Y_1)=P(X_2,Y_2)\]
+\end{theorem}
+
+\begin{proof}
+Using def of eq. point:
+\[ P(X_1,Y_1) \leq P(X_1,Y_2) \leq P(X_2,Y_2) \leq P(X_2,Y_1) \leq P(X_1,Y_1) \leq \]
+\end{proof}
+
+\begin{theorem} 
+If (X1,Y1) and (X2,Y2) are equlibrium pairs of a game, then so is (X1, Y2)
+\end{theorem}
+
+\begin{proof}
+See the last proof.
+\end{proof}
+
+\begin{theorem} 
+If X* is optimal strategy for A, then $v \leq P(X*,Y)$ for any mixed strategy Y for player B. Likewise, if Y* is optimal for B, then $v \geq P(X,Y*)$ for any mixed X for player A.
+\end{theorem}
+
+\begin{proof}
+Yup.
+\end{proof}
+
+\begin{definition}
+\defStyle{minimum payoff that player A can guarantee using strategy X} $u(X):= min_{all\; Y} P(X,Y)$.
+
+likewise, $w(Y):=max_{all\; X} P(X,Y)$. These values are well defined because the c's are fixed and the x's and y's are on a compact set ( sum x's  =1) (continuous function on compact set = obtains it's maximum).
+\end{definition}
+
+\begin{theorem} 
+For any X and Y, $u(X) \leq w(Y)$.
+\end{theorem}
+
+\begin{proof}
+\[ u(X) \leq P(X,Y) \leq w(Y) \]
+\end{proof}
+
+The next thm connects equilibrium pairs and u and w.
+
+\begin{theorem} 
+(X*,Y*) is an equilibrium pair iff u(X*) = w(y*). 
+
+Moreover, $u(X*) = w(y*) = P(X*,Y*) =: v$
+\end{theorem}
+
+\begin{proof}
+$\Rightarrow$ P(X*,Y*) is the max of P(X,Y*). So P(X*,Y*) = w(Y*). Likewise, P(X*,Y*) is the min of P(X*,Y) wrt all Y. So P(X*,Y*)=u(X*).
+
+$\Leftarrow$ $P(X*,Y*) \leq w(Y*) = u(X*) \leq P(X*,Y)$ for any Y. Likewise, $P(X*,Y*)  \geq u(X*) = w(Y*) \geq P(X,Y*)$. So (X*,Y*) is an eq. point.
+\end{proof}
+
+The next two theorems gives a graphical method to solving games. We plot $u(X)=min_j P(X,B_j)$ and then look at the maximum u-value. Likewise, we could plot w(Y) and look at the minimum w-value.
+
+\begin{theorem} 
+(X*,Y*) is an equilibrium pair, then 1) $u(X*) \geq u(X)$ for all X and 2) $w(Y*) \leq w(Y)$ for all Y.
+\end{theorem}
+
+\begin{proof}
+use the last two theorems.
+\end{proof}
+
+\begin{corollary}
+For any mixed strategy X for A and Y for B, $u(X) \leq v \leq w(Y)$ where v is the value of the game.
+\end{corollary}
+Proof: use the last two theorems.
+
+We have a problem: how do we FIND u(X)??? How do we check ALL Y? Well, we don't have to!!!
+
+\begin{theorem} 
+\[u(X)=min_{1 \leq j \leq n} P(X,B_j)\]
+So we only have to take a FINITE min. And likewise for w(Y).
+\end{theorem}
+
+\begin{proof}
+\[u(X):=min_{Y} \sum_{i,j}  c_{ij}x_iy_j = min_Y \sum_j y_j (\sum_i c_{ij}x_i)\]
+The min is attained when we let $y_j=1$ for that j which yields the smallest value for $\sum_i c_{ij}x_i$ and 0 for the other coordinates.
+\end{proof}
+
+
+\begin{example} (Rock, Paper, Scissors)
+\begin{table}
+\caption{Rock, Paper, Scissors}
+\begin{tabular}{c | c | c | c}
+\toprule 
+ & S & R & P \\
+S& 0 & -1 & 1 \\
+R&1& 0 &-1 \\
+P&-1&1&0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Let X,Y:=(1/3, 1/3, 1/3) each. Then u(X)=min(P(X,s),P(X,r),P(X,p)) = 0.
+
+Also, w(Y)=0. So (X,Y) is an equilibrium pair.
+\end{example}
+
+\begin{theorem}
+Let X*:=(x1, ..., xm), Y*:=(y1, ..., yn) form an eq. pair. Let v:=P(X*,Y*). If $y_k >0$ then $P(X*,B_k)=v$ and similarly if $x_r > 0$ then $P(A_r,Y*) = v$
+\end{theorem}
+
+\begin{proof}
+We can show $v \leq P(X*,B_j)$ for any j. For a contradiction, assume $v < P(X*,B_k)$. Then v=P(X*,Y*) = $(\sum_j y_j (\sum_i c_{ij}x_i) > \sum_j y_jv = v$, a contradiction.
+\end{proof}
+
+
+\section{2 by 2 games}
+Because 2x2 are so simple, we can write down a closed formula for them. 
+
+Consider the game
+
+\[\left(\begin{matrix}
+a & b \\
+c & d
+\end{matrix}\right)\]
+
+First look for saddle points. If there are none, consider $P(X,Y)=xya + x(1-y)b + (1-x)yc + (1-x)(1-y)d$, which can be rewritten as $R(x-S)(y-T) + U$ where (after some algebra and noting R=a-b-c+d, TR=d-b, SR=d-c, RST+U=d) T=(d-b)/R, S=(d-c)/R, U=d-((d-c)(d-b)/R)=det(...)/R
+
+If R=0, then a-b=d-c and so either ($a \geq b$ and $c \geq d$) or ($b \geq a$ and $d \geq c$), so one column of the matrix would dominate the other and we could reduce it (and re-find the saddle point).
+
+Claim: X*=(S,1-S), Y*=(T,1-T) is an eq. pair. b/c P(X*,Y) = U = P(X,Y*), we have u(X*)=w(Y*)=U.
+
+\section{World's fastest review of Linear Programing}
+Here we will develop/review LP to give the key ideas of Von Neumann's  fundamental theorem of matrix games.
+
+The primal LP is to
+\[maximize \; \sum_{j=1}^n c_jx_j\]
+s.t.
+\[ \sum_{j=1}^n a_{ij}x_j \leq b_i, 1 \leq i \leq m\]
+or $Ax \leq b$
+The dual LP is to 
+\[minimize\; \sum_{i=1}^m b_iy_i\]
+s.t.
+\[ \sum_{i=1}^m a_{ij}y_i \geq c_j, 1 \leq j \leq m\]
+or $y^TA \geq c^T$
+
+Key idea 1: Let C be our game matrix. We can add a large constant k to each element in C so that C has positive entries. If this new matrix has an equilibrium pair, then that pair also is an equilibrium pair of the orgional matrix and the value of the original game is k less than the value for the new game. (Proof: this is easy to see for pure equilibrium pairs. For mixed equilibrium pairs, use the fact that if you sum over a probability distribution you get 1)
+
+So lets assume C has positive entries.
+
+key idea 2: To find eq. pairs, it will suffice to find mixed strategies X and Y and a number v s.t.
+\begin{enumerate}
+	\item $v \leq P(X,B_j)$ for all j
+	\item $v \geq P(A_i,Y)$ for all i. 
+\end{enumerate}
+
+If this is true, then $v \leq min_j P(X,B_j) = u(X)$, and $v \geq max_i P(A_i,Y) = w(Y)$. Thus $w(Y) \leq v \leq u(X)$. But $u(X) \leq w(Y)$ always holds. Thus $v = P(X,Y)$ is the value of the game.
+
+We can rewrite the above conditions like so:
+\[(I)\; v \leq \sum_{i=1}^m c_{ij}x_i, \; 1 \leq j \leq n\]
+\[(II)\; v \geq \sum_{j=1}^n c_{ij}y_j,\; 1 \leq i \leq m\]
+
+Divide both sides by v (which is positive b/c C is positive) and let $\alpha_i = x_i/v$ and $\beta_j=y_j/v$. 
+
+Note that $\sum_{i=1}^m \alpha_i = 1/v$ and $\sum_{j=1}^m \beta_j = 1/v.$
+
+In (I), we want to find the largest v. So this means we want to minimize $1/v$. This gives us our first LP:
+\[ minimize\; \sum_{i=1}^m \alpha_i\]
+s.t.
+\[ \sum_{i=1}^m c_{ij}\alpha_i \geq 1,\; 1 \leq j \leq n\]
+We assume the $\alpha$'s are non-neg.
+
+In (II) we get a second LP:
+\[maximize \sum_{j=1}^n \beta_j\]
+s.t.
+\[\sum_{j=1}^n c_{ij}\beta_j \leq 1,\; 1 \leq i \leq m\]
+We assume the $\beta$'s are non-neg.
+
+And note that these two systems are dual to each other!!!
+
+Note that b/c C is positive and the $\alpha$'s and $\beta$'s are non-neg we are minimizing/maximizing on a compact set. So the solutions exist. By the fundamental theorem of duality the solutions to both LP's are the same. Call this max/min 1/v (take the reciprocal of the solution) and let the point that gives this solution be $\alpha^*$, $\beta^*$. (claim: $v\neq 0$ b/c $\sum_i c_{ij}\alpha_i^* \geq 1$ and C is positive, then at least one $\alpha_i$ is positive. So 1/v is positive.) Then let $X^* = v\alpha^*$ and likewise for $Y^*$. Also, $\sum_j X^*_j = 1$. Because conditions (I) and (II) are true, key idea 2 is true and so (X*,Y*) is an eq. pair.
+
+Note that we need to solve for the primal and dual variables. But this is easy b/c the simplex gives us this information. Consider the following example. 
+
+
+\begin{example}
+In the  extended tableau, the r's are primal slack, the s's are dual slack. We want to maximize the primal, so lets add x1 to the basis and pivot on $a_{21}=2$
+\begin{table}
+\caption{Extended simplex tableau: the start.}
+\begin{tabular}{c | c | c | c | c | c}
+\toprule 
+      & x1  & x2   & x3    & 1  &  \\ \hline
+y1   & 3    & 1    & -1    & -2 & = -r1 \\
+y2   & 2    &-1    &  2    & -1 & = -r2 \\ \hline
+-1   & 2    &-3    &  5    &  1 & = u  \\ \hline
+      & s1   & s2   & s3   &-w & 	\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A quick note on how to read the table. The 2nd row says $3x_1 +x_2 -x_3 -2 = -r_1$ and the first column says $3y_1 + 2y_2 -2 = s_1$
+
+\begin{table}
+\caption{Extended simplex tableau: pivot on $a_{21}=2$.}
+\begin{tabular}{c | c | c | c | c | c}
+\toprule 
+      & r2  & x2   & x3    & 1  &  \\ \hline
+y1   & -3/2  & 5/2    & -4    & -1/2 & = -r1 \\
+s1   & 1/2    &-1/2    &  1    & -1/2 & = -x1 \\ \hline
+-1   & -1    &-2    &  3    &  2 & = u  \\ \hline
+      & y2   & s2   & s3   &-w & 	\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Then we can do another set and replace $x_1$ with $x_3$, but I will not go further. 
+\end{example}
+
+\section{non-zero-sum games}
+The best thing to say is an example
+
+\begin{example}
+\[
+\begin{matrix}
+  &B_1 & B_2 \\
+A_1 & (-1,5) &(0,2) \\
+A_2 & (3,1)  & (1,0) \\
+A_3 & (1/2,2) &(4.1)
+\end{matrix}
+\]
+The first entry is the payoff for player A, and the 2nd entry is the payoff for player B.
+\end{example}
+
+Let $(A_{i_k})$ be maximin strategies for A, and $(B_{i_k})$ be B's. It is true that any such strategy for A (or B) must have the same value for A (or B). Let $(A_i,B_j) \in (A_{i_k}) \times (B_{j_k})$. Then $(A_i,B_j)$ is a maximin pair, but they may not be stable: one player could improve if they change to a different strategy. 
+
+\section{Nash equlibria}
+
+Let there be k players. Let us get a bunch of def's out of the way.
+
+\begin{definition}
+\defStyle{Nash equlibrium} is a k-tuple of strategies $(S_1, \dots, S_k)$ s.t. if only one player changes their strategy then then that person cannot improve.
+
+Let $(c_1, \dots, c_k)$ be the payoff for $(S_1, \dots, S_k)$. 
+
+$(a_1, \dots, a_k)$ is \defStyle{better} than $(b_1, \dots, b_k)$ iff 1) $a_i \geq b_i$ for all i and 2) and the vectors $a \neq b$.
+
+$(S_1, \dots, S_k)$ is \defStyle{Pareto-optimal} if no k-tuple of payoffs determined by any other k-tuple of strategies is better than the one given by $(S_1, \dots, S_k)$. (Think about posets, this is just a maximal element, but it might not be the "best" element)
+
+$(S_1, \dots, S_k)$ is \defStyle{best} if the payoffs determined by any other strategy vector is less than this one. (Think about posets, this is just an element that acts like root--every other one is below it.)
+\end{definition}
+
+\begin{theorem}
+Any game with k players has at least one Pareto optimal k tuple
+\end{theorem}
+
+\begin{proof}
+If not, then we can get an infinite sequence of better strategies. But each player has finite many strategies. 
+\end{proof}
+
+There is an easy method for finding pure Nash eq.  In each row, attach a marker to all second components that are maximal among all second components in that row. IN each column, attach a marker to all first components that are maximal among all first components in that column. Any entry with a marker on both components is a Nash equilibrium. 
+
+It is not nesessary for a two person non-zero-sum game to have saddle/eq. points. If there are Nash eq on opposite corners of a rectangle, then they may not be equal and the other two corners may not be Nash eq.
+
+Let player p have strategies $A_1, \dots A_m$. Let $(S_1, \dots, S_k)$ be mixed strategies for players $(p_1, \dots p_k)$. Then the expected pay off $P_j(S_1, \dots, S_k)$ for player j is the sum of all products of the form
+\[x_{1r_1}\dots x_{kr_k} P_j(A_{1r_1},\dots,A_{kr_k})\]
+
+In the case of two players, this reduces to
+\[\sum_{1\leq i \leq m, \; 1\leq j \leq n} x_i y_j P_A(A_i, B_j)\]
+
+
+\begin{example}
+\[
+\begin{matrix}
+	&	&	y_1	& y_2	&1-y_1-y_2 \\
+	&	&	B_1	& B_2	&B_3	\\
+x_1	&A_1& (2,1) & (2,1)  &(0,3) \\
+x_2 &A_2& (2,1) & (0,2)  & (2,1) \\
+1-x_1-x_2&A_3&(1,2)&(2,1)&(2,0)\\
+\end{matrix}
+\]
+There are no pure Nash eq. The payoff for A is 
+\[P_A=x_1(2y_1+2y_2)+x_2(2-2y_2)+(1-x_1-x_2)(2-y_1\], and for player B is
+\[P_B=x_1(3-2y_1-2y_2)+x_2(y_2+1)+(1-x_1-x_2)(2y_1+y_2)\]
+
+Assume $X^*=(x_1^*,x_2^*,1-x_1^*-x_2^*)$ and likewise for $Y^*$. Then $P_A(X,Y^*)$ should have a maximum at $X=X^*$. So the partial derivatives $\partial P_A/\partial x_1, \partial P_A/\partial x_2 =0$. So, $2y_1^*+2y_2^*-2=0$ and $y_1^*-2y_2^*=0$. Then $Y^*=(1/2,1/4,1/4)$
+
+Likewise $P_B(X^*,Y)$ should have a maximum at $Y=Y^*$. ...so then $X^*=(1/3,1/3,1/3)$. 
+
+We also have to check the endpoints (we could have just found critical points or saddle points when doing the partial derivatives). In stead, looking at $P_A(X,Y^*)=3/2x_1+1/2x_1+1/2x_2-1/2x_2-2x_1+2-1/2=3/2$ So $X^*$ maximizes $P_A(X,Y^*)$. Likewise, $P_B(X^*,Y)=4/3$ and is maximied at $Y^*$. Thus $(X^*,Y^*)$ is a Nash equilibrium. 
+\end{example}
+
+
+\section{Inadequacies of Nash Equilibria in non-zero sum games}
+
+Every non-zero sum game always has at least one Nash eq. But these equilibria do not always tell the players how they should play the game. 1) There could be several equlibria with different payoffs and with no clear choice between them. 2) The Nash equilibria may not yield the best outcomes.
+
+
+Consider the game
+\[\begin{matrix}
+(1,2) & (0,0) \\
+(0,0  & (2,1) \\
+\end{matrix}\]
+
+(A1,B1), (A2,B2) are pure Nash equlibria. If (x,1-x) is a mixed strategy for A, and likewise for B, then
+\[P_A(x,y)=3xy-2x+2-2y\]
+\[P_B(x,y)=3xy-x+1-y\]
+
+We can find that $X^*=(1/3,2/3)$ and $Y^*=(2/3,1/3)$, and this gives payoff $(2/3,2/3)$. But this is inferior to the pure Nahs eq. Also, b/c B prefers (1,2) and A prefers (2,1) it is not clear which strategy they should use.
+
+
+
+
+

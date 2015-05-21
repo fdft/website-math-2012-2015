@@ -1,0 +1,110 @@
+<?php    
+    include_once("../includeFiles/linkVars.php");
+    include_once("../includeFiles/linksMenu.php");
+    include_once("../includeFiles/footnote.php"); 
+    include_once("../includeFiles/headnote.php");  
+    
+    /* *********************** the above links mustbe relative **********************  */
+  ?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+  <title> Software </title>
+  <meta name="description" content="list of software that I have found useful" />
+  <meta name="keywords" content="software, school" />
+  <meta name="author" content="bedutra" />
+  <meta name="robots" content="index,follow" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="content-language" content="en" />
+
+  <!-- ********* css file for every page ******************** -->
+  <link rel="stylesheet" type="text/css" href="../includeFiles/masterCSS.css" />
+</head>
+<body>
+
+<!-- ***************************************************** -->
+<!-- ******* start of master table, id="thetable" ******** -->  
+<!-- ***************************************************** --> 
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="thetable">
+<tr>
+   <td class="tableHead">
+     <?php
+       printMasterHeadNote(); //from headnote.php
+     ?>
+  </td></tr>
+<tr>
+  <td class="nav">
+
+  <!-- ********************************************* -->
+  <!-- ************ code for left links ************ -->
+  <!-- ********************************************* -->
+
+  <?php
+   printLeftLinks(); //from linkMenu.php
+  ?>
+  
+ 
+  <!-- **************************************************** -->
+  <!-- ************ end of code for left links ************ -->
+  <!-- **************************************************** -->
+
+
+</td><td class="workspace">
+
+
+<h1 class="topheadline">Useful (free) Software for School</h1>
+
+
+<p>Below is a list of software tools that I have found useful for school work and projects.</p>
+
+<div class="subheadline">Mathematical</div>
+
+<ul>
+	<li><a href="" class="outlink">LattE</a>: Great tool for finding lattice points in polytopes and integrating polynomials over polytopes. Disclaimer: I have worked on this project.</li>
+	<li><a href="" class="outlink">Polymake</a>: Great tool for finding everything you want to know about polytopes. Disclaimer: I am friendly with the people on this project.</li>
+	<li><a href="" class="outlink">Sage</a>: I have never used it personally, but I am impressed with what it can do. It seems to work like a free version Maple.</li>
+	<li><a href="http://www.wolframalpha.com/" class="outlink">Wolfram Alpha</a>: great online math tool.</li>
+</ul>
+
+<div class="subheadline">Other tools</div>
+
+IDE's
+
+<ul>
+	<li><span class="b">Java</span>: I have used Eclipse and Netbeans. Both are good, but I like Eclipse better because I feel it is more powerful in terms of addons and the size of the community. I have also used Eclipse for Google's Android API, C++, and PHP. I do not like the Eclipse addon for Latex.</li>
+	<li><span class="b">Latex</span>: I started off using <a href="http://www.texniccenter.org/" class="outlink">TexnicCenter</a> but I felt limited, but I think they now have a new version. I have TexWorks that comes with MiKTeX 2.9 but I am not impressed. I tried <a href="http://www.lyx.org/" class="outlink">LyX</a> but I felt I didn't have enough control. I'm currently using <a href="http://www.xm1math.net/texmaker/" class="outlink">TexMaker</a> and I'm more-or-less happy. In the perfect world, OpenOffice would have a formula editor that could understand Latex.</li>
+</ul>
+
+
+</td>
+</tr>
+<tr>
+  <td colspan="2" class="workspace2">
+    <!-- ******************************************* -->
+    <!-- ************ start of footnote ************ -->
+    <!-- ******************************************* -->
+
+    <?php
+      printFootnote(1);
+    ?>  
+
+    <!-- ******************************************* -->
+    <!-- ************ end of footnote ************ -->
+    <!-- ******************************************* -->
+  </td>
+</tr>
+</table>
+
+<!-- ***************************************************** -->
+<!-- ******* end of master table, id="thetable" ******** --> 
+<!-- ***************************************************** -->
+
+</body>
+</html>
+
+
+

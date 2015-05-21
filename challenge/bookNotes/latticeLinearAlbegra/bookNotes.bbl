@@ -1,0 +1,29 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{1}
+
+\bibitem{barvinokzurichbook}
+A.~I. Barvinok, \emph{Integer points in polyhedra}, Z\"urich Lectures in
+  Advanced Mathematics, European Mathematical Society (EMS), Z\"urich,
+  Switzerland, 2008.
+
+\bibitem{bremnerLatticeBasisReduction}
+M.~Bremner, \emph{Lattice basis reduction: introduction to the lll algorithm
+  and its applications}, Pure and Applied Mathematics, CRC Press: Chapman and
+  Hall book, Boca Raton, FL, 2012.
+
+\bibitem{georgeNemhauserBook}
+W.~L. Nemhauser, George, \emph{Iteger and combinatorial optimization},
+  Wiley-Interscience series in discrete mathematics and optimization,
+  Wiley-Interscience, New York, 1988.
+
+\bibitem{schrijver}
+A.~Schrijver, \emph{Theory of linear and integer programming},
+  Wiley-Interscience, 1986.
+
+\end{thebibliography}

@@ -1,0 +1,281 @@
+%-----------------------------------------------------------------------
+% Beginning of amsbook.template
+%-----------------------------------------------------------------------
+% %
+%    AMS-LaTeX v.2 driver file template for use with amsbook
+%
+%    Remove any commented or uncommented macros you do not use.
+
+\documentclass[12pt]{amsbook}
+
+%    For use when working on individual chapters
+%\includeonly{}
+
+
+
+%    Include referenced packages here.
+\usepackage[hyphens]{url}
+\usepackage{enumerate}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{verbatim}
+\usepackage{amsthm}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage{url}
+\usepackage{amstext}
+\usepackage{multirow}
+\usepackage{latexsym}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{rotating}
+\usepackage{longtable}
+\usepackage{xcolor}
+
+
+%%%%%%%%% MACROS AND DEFINITIONS %%%%%%%%
+
+\def\ve#1{\mathchoice{\mbox{\boldmath$\displaystyle\bf#1$}}
+{\mbox{\boldmath$\textstyle\bf#1$}}
+{\mbox{\boldmath$\scriptstyle\bf#1$}}
+{\mbox{\boldmath$\scriptscriptstyle\bf#1$}}}
+\newcommand\vealpha{{\boldsymbol{\alpha}}}
+\newcommand\vebeta{{\boldsymbol{\beta}}}
+\newcommand\velambda{{\boldsymbol{\lambda}}}
+\newcommand\vehatlambda{{\boldsymbol{\hat\lambda}}}
+\newcommand\vetildelambda{{\boldsymbol{\tilde\lambda}}}
+\newcommand\vemu{{\boldsymbol{\mu}}}
+\newcommand\Z{\mathbb Z}
+\newcommand\N{\mathbb N}   
+\newcommand\R{\mathbb R}
+\newcommand\F{\mathbb F}   
+\newcommand\Q{\mathbb Q}
+\newcommand{\Proj}{{\mathbb P}}
+\newcommand{\lin}{\operatorname{lin}}
+\DeclareMathOperator{\card}{Card}
+ \DeclareMathOperator{\ind}{ind}
+\DeclareMathOperator{\sign}{sign} \DeclareMathOperator{\td}{td}
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\interior}{relint}
+\DeclareMathOperator{\closure}{cl}
+\DeclareMathOperator{\diagonal}{diag}
+\DeclareMathOperator{\conv}{conv}   %%% Denotes convex hull
+\DeclareMathOperator{\vol}{vol}     %%% Denotes volume
+\DeclareMathOperator{\supp}{support}        %%% Denotes support.
+\DeclareMathOperator{\affine}{aff}       %%% Denotes affine space
+\DeclareMathOperator{\Res}{Res}  %% Residue
+\let\boundary=\partial
+\let\epsilon=\varepsilon
+\usepackage{ifthen}
+\makeatletter
+\newcommand{\DeclareBracket}[3]{
+  \newcommand{#1}[2][]{%
+  \ifthenelse%
+  {\equal{##1}{}}%
+  {\left#2##2\right#3}%
+  {\csname ##1l\endcsname#2##2\csname ##1r\endcsname#3}}}
+\makeatother
+\DeclareBracket\abs||           % absolute value
+\DeclareBracket\norm\|\|        % norm symbol
+\newcommand{\snorm}[1]{//#1//}
+\DeclareBracket\floor\lfloor\rfloor
+\DeclareBracket\ceil\lceil\rceil
+\DeclareBracket\set\{\}
+\DeclareBracket\paren()
+\DeclareBracket\inner\langle\rangle
+\DeclareBracket\fractional\{\}
+\newcommand{\mkoeppesays}[1]{\textcolor{red}{\ttfamily #1 --mkoeppe}}
+\newcommand{\cractional}[1]{\left\{\!\left\{#1\right\}\!\right\}}
+\newcommand{\normall}{\mathopen} % for explicit normal size
+\newcommand{\normalr}{\mathclose}
+\newcommand\C{\mathbb C}
+\newcommand\Order{\mathrm O}     %% Landau symbol
+\newcommand\inputfig[1]{\ifpdf
+    \input{#1.pdf_t}
+    \else
+    \input{#1.pstex_t}
+    \fi}
+\newenvironment{notes}{\ttfamily\raggedright}{\par}
+
+\newenvironment{inputlist}
+  {\begin{enumerate}[\quad\rm({I}$_\bgroup 1\egroup$)]}
+  {\end{enumerate}}
+\newenvironment{outputlist}
+  {\begin{enumerate}[\quad\rm({O}$_\bgroup 1\egroup$)]}
+  {\end{enumerate}}
+
+\renewcommand{\d}{\,\mathrm{d}}
+
+
+\newtheorem{theorem}{\color{blue}Theorem}%
+%theoremstyle{plain}
+%\theorembodyfont{\color{blue}}
+%% The complicated counter-related redefinitions
+%% are necessary to make Hyperref's \autoref work with the theorems.
+\makeatletter
+\newtheorem{lemma}{\color{blue}Lemma}
+\renewcommand*{\c@lemma}{\c@theorem}
+\renewcommand*{\p@lemma}{\p@theorem}
+\renewcommand*{\thelemma}{\thetheorem}
+\newcommand{\lemmaname}{Lemma}
+%%
+\newtheorem{conjecture}{\color{blue}Conjecture}
+\renewcommand*{\c@conjecture}{\c@theorem}
+\renewcommand*{\p@conjecture}{\p@theorem}
+\renewcommand*{\theconjecture}{\thetheorem}
+\newcommand{\conjecturename}{Conjecture}
+%%
+\newtheorem{proposition}{\color{blue}Proposition}
+\renewcommand*{\c@proposition}{\c@theorem}
+\renewcommand*{\p@proposition}{\p@theorem}
+\renewcommand*{\theproposition}{\thetheorem}
+\newcommand{\propositionname}{Proposition}
+%%
+\newtheorem{corollary}{\color{blue}Corollary}
+\renewcommand*{\c@corollary}{\c@theorem}
+\renewcommand*{\p@corollary}{\p@theorem}
+\renewcommand*{\thecorollary}{\thetheorem}
+\newcommand{\corollaryname}{Corollary}
+%%
+\newtheorem{observation}{\color{blue}Observation}
+\renewcommand*{\c@observation}{\c@theorem}
+\renewcommand*{\p@observation}{\p@theorem}
+\renewcommand*{\theobservation}{\thetheorem}
+\newcommand{\observationname}{Observation}
+\theoremstyle{definition}
+%%
+\newtheorem{problem}{\color{blue}Problem}
+\renewcommand*{\c@problem}{\c@theorem}
+\renewcommand*{\p@problem}{\p@theorem}
+\renewcommand*{\theproblem}{\thetheorem}
+\newcommand{\problemname}{Problem}
+%%
+\newtheorem{application}{\color{blue}Application}
+\renewcommand*{\c@application}{\c@theorem}
+\renewcommand*{\p@application}{\p@theorem}
+\renewcommand*{\theapplication}{\thetheorem}
+\newcommand{\applicationname}{Application}
+%%
+\newtheorem{definition}{\color{blue}Definition}
+\renewcommand*{\c@definition}{\c@theorem}
+\renewcommand*{\p@definition}{\p@theorem}
+\renewcommand*{\thedefinition}{\thetheorem}
+\newcommand{\definitionname}{Definition}
+%%
+\newtheorem{remark}{\color{blue}Remark}
+\renewcommand*{\c@remark}{\c@theorem}
+\renewcommand*{\p@remark}{\p@theorem}
+\renewcommand*{\theremark}{\thetheorem}
+\newcommand{\remarkname}{Remark}
+%%
+\newtheorem{example}{\color{blue}Example}
+\renewcommand*{\c@example}{\c@theorem}
+\renewcommand*{\p@example}{\p@theorem}
+\renewcommand*{\theexample}{\thetheorem}
+\newcommand{\examplename}{Example}
+%%
+%\newtheorem{algorithm}{Algorithm}
+%\renewcommand*{\c@algorithm}{\c@theorem}
+%\renewcommand*{\p@algorithm}{\p@theorem}
+%\renewcommand*{\thealgorithm}{\thetheorem}
+%\newcommand{\algorithmname}{Algorithm}
+
+\makeatother
+\newcommand{\subsectionautorefname}{Section}
+
+\usepackage[breaklinks=true,colorlinks,citecolor=blue]{hyperref}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+
+%time tests: formatting commands.
+%\newcommand{\timeFaster}[1]{{\bf #1}}
+%\newcommand{\timeSlower}[1]{#1}
+%\newcommand{\timeTie}[1]{#1}
+%\newcommand{\timeNotComputed}[1]{--}
+
+%\newcommand{\latte}{{\tt LattE} }
+%\newcommand{\vinci}{{\tt Vinci} }
+%\newcommand{\maple}{{\tt Maple} }
+%\newcommand{\cdd}{{\tt CDD} }
+%\newcommand{\fourtitwo}{{\tt 4ti2} }
+
+\newcommand{\dw}[1]{\textcolor{red}{#1}}
+%\newcommand{\floor}[1]{{\left \lfloor #1 \right \rfloor}}
+\newcommand{\floorc}[1]{{\left \lbrace #1 \right \rbrace}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%back to the org. file.
+
+
+
+\newcommand\Side[1]{\begin{sideways}{\small #1}\end{sideways}}
+\newcommand{\dotprod}{{\scriptscriptstyle \stackrel{\bullet}{{}}}}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\linespread{1.05}
+
+
+
+\newcommand{\skipline}{\vspace{12pt}}
+\newcommand{\MYitem}{\refstepcounter{equation}\textbf{(\theequation)}} 
+
+
+\numberwithin{section}{chapter}
+\numberwithin{equation}{chapter}
+
+%    For a single index; for multiple indexes, see the manual
+%    "Instructions for preparation of papers and monographs:
+%    AMS-LaTeX" (instr-l.pdf in the AMS-LaTeX distribution).
+\makeindex
+
+\begin{document}
+
+\frontmatter
+
+\title{Notes on Lattices and Integer Linear Algebra}
+
+
+\author{Brandon Dutra}
+\address{Department of Mathematics, University of California, Davis}
+\curraddr{}
+\email{bedutra@ucdavis.edu}
+
+\maketitle
+
+
+	
+
+
+
+\setcounter{page}{4}
+
+\tableofcontents
+
+
+\mainmatter
+\include{chapters/alexBarvinok}
+\include{chapters/georgeNemhauser}
+\include{chapters/alexanderSchrijver}
+\include{chapters/murrayBremner}
+
+
+%\backmatter
+%    Bibliography styles amsplain or harvard are also acceptable.
+\bibliographystyle{amsabbrv}
+\bibliography{biblio}
+
+%    See note above about multiple indexes.
+%\printindex
+
+\end{document}
+
+%-----------------------------------------------------------------------

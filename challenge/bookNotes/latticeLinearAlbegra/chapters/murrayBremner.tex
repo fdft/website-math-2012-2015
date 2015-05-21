@@ -1,0 +1,157 @@
+\chapter{Book: Lattice Basis Reduction: LLL and its Applications.}
+
+Most text/math came from \cite{bremnerLatticeBasisReduction}.
+
+In this book, lattice generating points are placed in a row of a matrix and not its columns.
+
+I just want to list the names of some algorithms that LLL is part of or improves on.
+
+\section{Fincke-Pohst Algorithm}
+We want to find all lattice points inside a box by looking inside an ellipsoid.
+
+Let columns of lattice be in $B$. Let $G=B^TB$ be the Gramm matrix. The Cholesky decomposition is $G=U^TDU$.
+
+The FP Algorithm is to find $\norm{Bx}^2 \leq C$. Note that
+\begin{align*}
+	\norm{Bx}^2 & = (Bx)^T(Bx) \\
+	& = x^T(B^TB)x  \\
+	& = x^TGx \\
+	& = \sum_{i=1}^m d_i(x_i + \sum_{j=i+1}^m u_{ij}x_j)^2 \leq C
+\end{align*}
+
+where $x=(x_1, \cdots, x_m) \in \R^m$.
+
+Look at $i=m$ first then  we bounds on what integers $x_m$ could be
+\[
+	\ceil{-\sqrt{C/d_m}} \leq x_m \leq \floor{\sqrt{C/d_m}}.
+\]
+
+Then for each $x_m$ loop over what $x_{m-1}$.
+
+In general, let $S_k = \sum\limits_{i=k+1}^m d_i(x_i + \sum\limits_{j=i+1}^m u_{ij}x_j)^2$, 
+and $T_k = \sum\limits_{j=k+1}^m u_{kj}x_j$.Then
+\[
+	\ceil{-\sqrt{\frac{C-S_k}{d_k}}} \leq x_k \leq \floor{\sqrt{\frac{C-S_k}{d_k}}}.
+\]
+
+Now lets use LLL. Write $G=U^TDU=R^TR$.
+
+Find $R^{-1}$, and think of its rows as a lattice. Do LLL on the rows and save the result in the rows of $S^{-1}$. Find $x^{-1}$ st $S^{-1}=X^{-1}R^{-1}$. Let $P$ be a permutation matrix s.t. the rows of $(SP)^{-1}$ has decreasing Euclidean norm. Make the Gram matrix $H =(SP)^T(SP)$. Apply Fincke-Pohst  to $H$. If $z$ is one of the coeff. vectors, let  $y=Pz$, then change the  basis  to $x=Xy$. Then the short lattice vectors are $w=Bx$.
+
+\section{Polynomial Factorization}
+
+
+Let $f\in \F_{p^n}[x]$ be square-free, because this is a UFD, $f = \Pi g_i$. Group producds of distince  irreducible factors of d into $h_d$.
+
+\begin{definition}
+	distinct-degree decomposition of f (which is sqare-free) is the seq. ddd(f)=$[h_1, h_2, \cdots, h_d]$.
+\end{definition}
+
+We can find the square-free part of f by dividing by f by the GCD($f,f'$).
+
+
+\begin{theorem}
+	$q=p^n$,p is prime. $i \geq1$.In $\F_q[x]$,$x^{q^i}-x=\prod\limits_{d\|i} \prod\limits_{deg(f)=d}f$ where the 2nd product is over all f monic irreducibles.
+\end{theorem}
+
+This thorem gives us $h1=GCD(f, x^q-x)$, then divide $f_1:=f/h_1$ and find $h_2=gcd(f_1,x^{q^2}-x)$. Then divide and let $f_2:=f_1/h_2$ and find $h_3=GCD(f_2, x^{q^3}-x)$, and so on
+
+
+\subsection{Equal degree decomposition}
+
+Given a $h_d$, want to find $h_d =\prod\limits_{j=1}^{l_d}h_{dj}$ where $deg(h_{dj})=d$.
+
+
+\begin{theorem}
+	$g$ be a randomrniformly  distributed non-constannt  polynomial with $deg(g) < deg(h)$.
+	
+	If $gcd(g,h)\neq1$, then $gcd(g,h)$  is a proper factor of h.
+	If $gcd(g,h)=1$, then $\bar g=GCD(\overline{g^e}-1,h), e=(q^d-1)/2$, where the bar denotes remainder mod h, is a proper factor of h with probability $\geq 1/2$.
+\end{theorem}
+
+
+\subsection{Hensel lifting of a polynomial factorizatoin}
+
+
+Let $f\in\F[x]$, let $p$ be prime and not divide the leading coeff. of $f$. Assume we have $\bar f = \bar g_1 \bar h_1$ in $\F[x]$ with $g_1, h_1 \in \Z[x]$, where the bar is taking the coeff. mod $p$. We want to find $g_2,h_2 \in \Z[x]$ s.t. $deg(g_1)=deg(g_2)$ and $deg(h_1)=deg(h_2)$ and $f = g_2h_2 \mod p^2$. We want to lift the factorization from the ring $(\Z/p\Z)[x]$ to $(\Z/p^2\Z)[x]$ (which is not a field because $p*p=0 \mod p^2$). Repeating this lifting we can get $f = g_n h_n \mod p^{2^n}$. See Algorithm \ref{alg:HenselLifting}.
+
+\begin{algorithm}                      
+\caption{Hensel lifting}
+\label{alg:HenselLifting}
+\begin{algorithmic}                    
+\REQUIRE Polynomials $f,g_1, h_2 \in\Z[x]$ s.t $f=g_1h_1 \mod m$,
+\REQUIRE Polynomials $s_1, t_1 \in \Z[x]$ s.t. $s_1g_1 + t_1h_1 = 1 \mod m$, $deg(s_1) < deg(h1)$, $deg(t_1)<deg(g_1)$.
+\ENSURE Polynomials $g_2, h_2 \in \Z[x]$,s.t. $f=g_2h_2 \mod m^2$ and the deg's of the g's are equal and $g_2 = g_1 \mod m$ and likewise for the h's.
+\ENSURE Polynomials $s_2, t_t \in \Z[x]$ s.t. $s_2g_2 + t_2h_2 = 1 \mod m^2$ and $s_2 =s_1 \mod m$ and $deg(s_2) < deg(h_2)$ and likewise for the t's.
+\STATE $e := f-g_1h_1 \mod m^2$
+\STATE Find $q,r \in \Z[x]$ s.t $s_1e=qh_1 +r \mod m^2$
+\STATE $g_2:=g_1 +t_1e+qg_1 \mod m^2$
+\STATE $h_2 := h_1 + r \mod m^2$
+\STATE $e^* := s_1g_2 + t_1h_2 -1 \mod m^2$
+\STATE Find $q*, r* \in \Z[x]$ s.t. $s_1e^* = q^*h_2+r^* \mod m^2$
+\STATE $s_2 := s_1 -r^* \mod m^2$
+\STATE $t_1 := t_1 -t_1e^* -q*g_2 \mod m^2$
+\RETURN $g_2, h_2, s_2, t_2$
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Polynomial factorizatoin over $\Z[x]$ and not just $(\Z/m\Z)[x]$}
+
+There is something called the Zassenhaus factorization algorithm (for finite fields?). Then von  zur Gathen and Gerhard developed the following
+
+
+\begin{algorithm}                      
+\caption{Polynomial Factoring}
+\label{alg:polyFactoring}
+\begin{algorithmic}                    
+\REQUIRE Squarefree primative non-constant poly $f \in \Z[x]$.
+\ENSURE The  factors of $f$ over  $\Z[x]$.
+\STATE $n=deg(f)$
+\STATE $C:=(n+1)^{2n} \norm{f}_\infty^{2n-1}$
+\STATE $B:=(n+1)^{1/2}2^n\norm{f}_\infty*L(f)$  where  $L(f)$  is leading coeff  of f.
+\STATE $r:= \ceil{2 \log C}$
+\STATE Find prime s.t.  $p  < 2r \ln r$, $p$  does not  divide $L(f)$ nor the polynomial discriminant (det of Sylvester matrix of polynomials)  of $f$.
+\STATE $k:=\ceil{\log_p (2B+1)}$
+\STATE Factor  $\bar  f  = \bar L(f) \bar  h_1 \cdots \bar h_r $  in $\F_p[x]$  using symmetric  representatives $\norm{h_i}_\infty <  p/2$. I think this  uses  Zassenhaus.
+\STATE Use  Hensal  to find monic polynomials $f=L(f)g_1 \cdots g_r  \mod p^k$   and $g_i=h_i  \mod  p$  while 
+using symmetric representatives $\norm{g_i}_\infty  <  p^k/2$.
+\STATE $T:=\{1,2,\cdots,r\};  s:=1; F:=f$
+\WHILE{$2s   \leq size(T)$}
+	\FOR{every $s$-slement subtset  of $T$  called  $S$}
+		\STATE Find $G,H \in \Z[x]$  s.t.  $\norm{G}_\infty,  \norm{H}_\infty  < p^k/2$
+		\STATE s.t. $G = L(F) \prod\limits_{i\in S} g_i  \mod  p^k$
+		\STATE and  $H = L(F) \prod\limits_{i\in  T - S} g_i \mod p^k$
+		\IF{$\norm{G}_1\norm{H}_1  \leq  B$}
+			\STATE Append  $prim(G)$ to result.
+			\STATE $T:=T-S$
+			\STATE $F:=prim(H)$
+		\ENDIF
+	\ENDFOR
+\ENDWHILE
+\STATE Append $F$ to  result
+\RETURN result.
+\end{algorithmic}
+\end{algorithm}
+
+It is clear Algorithm \ref{alg:polyFactoring} is exponential in the  worst  case because of the  ``every subset" loop, but  this is  where  LLL comes to save the day.
+
+\begin{theorem}
+	$f,g  \in  \Z[x]$ where $f$ is deg  $n > 0$ and $g$  is  degree  $m  > 0$. Let $u \in \Z[x]$ be monic  and   nonconstant  and  $f = uv_1 \mod  m$ and  $g=uv_2 \mod m$ for  some $v_1,  v_2 \in \Z[x]$. Assume $m > \norm{f}^k_2\norm{g}^n_2$. Then $GCD(f,g)$ is nonconstant.
+\end{theorem}
+
+
+Let $f$  be squarefree and primative of deg n. Let  $u$ be  monic and  nnonconstant  with  $d=deg(g) < n$  and  $f=uv \mod  m$ where  $m=p^k$. We want to find a poly $g  \in  \Z[x]$  s.t. $m  >  \norm{g}_2^n\norm{f}_2^{deg(g)}$. Then by the lemma $GCD(f,g)$ is nonconstant and hence a factor in $\Z[x]$.
+
+Let $j\in \{d+1, \dots, n\}$ We want  to  find  $g$ of  deg $< j$. Write a polynomal  as  a  list of its coefficient  vector. Let  $L \subset \Z^j$  be the  lattice  with  a basis consisting of the coefficient vectors of polynomials \[\{u, xu,  x^2u,  \cdots, x^{j-d-1}u\}\cup\{m, mx, \dots, mx^{d-1}\}\]  There are $j-d +d$ elements of this basis  and  they are  lin  independent  b/c each has a unique  degree (m in an  integer and u has deg d). A general $g \in L$ has the from $\sum  q_ix^iu + \sum r_imx^i = qu +mr$. Hence $g=qu \mod m$.So  u divides g mod m. Therefore, $g \in L \Rightarrow deg(g) < j$ and $u$ divides $g \mod m$.
+
+Conversely, assume $deg(g) <  j$ and $u$ divides $g \mod m$. Then $g=q_1u +mr_1$. B/c $u$ is monic, $r_1 = q_2u + r_2$  for some $q_2, r_2$. Then\[(q_1 + mq_2)u +  mr_2 =  q_1u r_1m = g.\] It is clear that $deg(r_2) <  deg(u)$, $deg(q_1) \leq  deg(g)  -  deg(u) < j-d$ and $deg(q_2)\leq deg(r_1)-deg(u) < j-d$. Thus $g \in  L$.
+
+Hence $g \L \Leftrightarrow deg(g) < j, u\mid g \mod m$.
+
+This  justifies  the use of  LLL, but we also  want $\norm{g}_2^n < m \norm{f}_2^{-deg(g)}$. Use LLL with $\alpha=3/4$ we get that  for any $g$ in the lattice $\norm{g_1}_2 \leq 2^{(j-1)/2}\norm{g}_2  \leq 2^{n/2}\norm{g}_2$. But Mignotte's bound lemma gives that  $\norm{g}_\infty \leq \norm{g}_2  \leq B$  where  $B=(n+1)^{1/2}2^n\max(\norm{f}_\infty,\norm{g}_\infty)$.
+
+Then $\norm{g_1}_2\leq 2^{n/2}B$. Hence \[\norm{g_1}_2^{j-1}\norm{g}_2^{deg(g_1)} < (2^{n/2}B)^nB^n = 2^{n^2/2}(n+1)^{1/2}2^{2n^2}\max(\norm{f}_\infty,\norm{g}_\infty)^{2n} \leq p^k,\] by the choice of k in the factorication algorithms. By the lemma above, $GCD(g,g_1)$ is nonconstant in $\Z[x]$.
+
+Hence in the factorization algorithm, we  can replace the ``every subset'' loop with a call to LLL for every monic divisor  $h_d$ ??? (I'm  not sure exactly).
+

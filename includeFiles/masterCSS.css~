@@ -1,0 +1,258 @@
+
+
+body {
+	background-color:rgb(102, 102, 102);
+	color: rgb(255, 255, 255);
+	padding:0;
+	margin:1em;
+ 	
+}
+
+/* there is only one thetable */
+#thetable {
+	border:1em;
+	margin:0;
+}
+
+/* thetable's head td. */
+.tableHead {
+	background-image: url('http://r4.ucdavis.edu/images/masterImages/headerBG.png');
+	background-repeat:no-repeat ;
+	background-position: top right;
+	background-color:rgb(102, 102, 102);
+	padding: .5em .5em 0 .5em ;
+
+}
+
+#headerName {
+	font-size:x-large;
+	font-weight: bold;
+	color:#ffcc00;
+		
+}
+
+
+
+/* the left navigation menu */
+.nav {
+	background-color:rgb(90, 90, 90);
+	width:15%;
+	color: #ffcc00; 
+	font-weight: bold;
+	vertical-align: top;
+	text-align: left;
+	font-size: 12pt;
+	padding-top:1pt;
+	padding-left:7pt;
+	font-family: Verdana, Tahoma, "Helvetica", "Helv", "Arial", sans-serif;
+	
+	
+}
+
+	
+/* **********************************************    */
+/* START of  style for the links at the left         */ 
+/* **********************************************    */
+.nav dl, .nav dt, .nav dd {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.nav a:link, .nav a:visited, .nav a:active
+{
+	background-color:rgb(90, 90, 90);
+	color: #ffcc00; 
+	text-decoration:none;
+	padding: .5em 0 .5em 0em;
+	display:block;
+	margin: 0 0 0 0;
+
+}
+
+
+.nav a:hover {
+	background-color:rgb(90, 90, 90);
+	color: #FF7300; 
+	text-decoration:none;
+	padding: .5em 0 .5em .5em;
+	display:block;
+	margin: 0 0 0 0;
+}
+
+/* ********************************************    */
+/* END of style for the links in the left          */
+/* ********************************************    */
+
+/* link color for all other links.*/
+
+a:hover, a:link, a:active {
+	color:#aaffaa;
+	text-decoration:underline;
+}
+
+a:visited {
+	color:#C4FFC4;
+	text-decoration:underline;
+}
+
+
+
+/* Creates a 2 bar display. */
+.topheadline {
+	font-size:x-large;
+	color:#ffcc00;
+	width:100%;
+	margin: 0;
+	padding: 0;
+}
+.subheadline {
+	color:#fff;
+	background-color:rgb(90, 90, 90);
+	font-weight: bold;
+	width:100%;
+}
+
+
+.subheadlineimg {color:#fff;background-color:#002666;width:65%;} /* for when there needs to be a subheadline by an image that is 270px width.  But I haven't figured out how to make it specific enough...*/
+
+
+
+/* where the mian content of every page exists. In a td.workspace */
+.workspace {
+	background-color:rgb(102, 102, 102);;
+	padding-left:7pt;
+	padding-right:7pt;
+	padding-top:7pt;
+	padding-bottom:7pt;
+	font-size:100%;
+	vertical-align:top;
+	font-family: "Arial", "Times", sans-serif;
+
+	background-repeat: no-repeat;
+	background-position: right bottom;
+	background-attachment: fixed;
+	background-image: url("http://r4.ucdavis.edu/images/masterImages/backgroundWatermark.jpg"); /* in FF, this must come after the other background rules */
+}
+
+
+
+/* the footnote area td.workspace2*/
+.workspace2 {
+	background-color:rgb(102, 102, 102);
+	padding: 0 0 0 0;
+	margin: 0 0 0 0 ;
+	vertical-align:bottom;
+	color:#fff;
+	text-align:center;
+ 
+}
+
+/* defines the container for a page's main image. */
+div.imageBox {
+  	display: block;
+	width: 280px;
+  	float: right;
+  	margin-left: 1em; 
+}
+
+/* the caption for the main image's caption */
+div.imageBox .imageCaption {
+	text-align: center;
+	color: #002666;
+	font-weight: bold;
+	font-size: smaller;
+}
+
+
+
+	
+
+			
+/* used for outbound and external links */
+a.outlink {font-style: italic; 
+background-image: url("http://math.ucdavis.edu/~bedutra/images/main/externelLink.png");
+background: url("http://math.ucdavis.edu/~bedutra/images/main/externelLink.png") center right no-repeat;
+background-image: url("http://math.ucdavis.edu/~bedutra/images/main/externelLink.png");
+background-repeat-x: no-repeat;
+background-repeat-y: no-repeat;
+background-attachment: initial;
+background-position-x: 100%;
+background-position-y: 50%;
+background-origin: initial;
+background-clip: initial;
+background-color: initial;
+background: url("http://math.ucdavis.edu/~bedutra/images/main/externelLink.png") center right no-repeat!ie;
+padding-right: 13px;
+}
+
+
+/* used for linking to pdf files*/
+a.pdflink {font-style: italic; 
+background-image: url("http://math.ucdavis.edu/~bedutra/images/main/pdflLink.gif");
+background: url("http://math.ucdavis.edu/~bedutra/images/main/externelLink.png") center right no-repeat;
+background-image: url("http://math.ucdavis.edu/~bedutra/images/main/pdfLink.gif");
+background-repeat-x: no-repeat;
+background-repeat-y: no-repeat;
+background-attachment: initial;
+background-position-x: 100%;
+background-position-y: 50%;
+background-origin: initial;
+background-clip: initial;
+background-color: initial;
+background: url("http://math.ucdavis.edu/~bedutra/images/main/pdfLink.gif") center right no-repeat!ie;
+padding-right: 19px;
+}
+			
+			
+/* used as style for things printed in footnote.php */
+.footNote {
+	color: #fff;
+	font-size:.8em;
+	font-family:verdana,arial,helvetica,sans-serif;
+}
+
+
+/* general shortcuts */
+.bold, .b {font-weight:bold; color:#fff;}
+
+.i { font-style: italic;}
+.u {text-decoration: underline;}
+
+
+.centerimg {
+	display:block;  /* centers an image in middle of page */
+	margin-right:auto;
+	margin-left:auto;
+}
+.listPad li {padding-bottom:1em;}
+
+
+/* *** General IE hacks *** */
+
+/* floating of a main pages' image cause any block-elements to be pused down (away from the float)  */
+/* Pages that needed this hack:
+	aboutR4/index.php
+	/programs/ewaste/compactDisks.php
+	programs/compostFood/organicWaste.php
+	programs/compostFood/scienceOfComposting.php
+	programs/illegalPosting.php x3
+	/programs/buyingRecycled.php
+	publications/recyclingFunFacts.php
+	publications/wasteReduction.php
+	events/2008/studentRM.php
+	links/kidsRecyclingCorner.php
+	
+*/
+.disLine {
+	display: inline;
+}
+
+
+
+
+
+
+
+
+

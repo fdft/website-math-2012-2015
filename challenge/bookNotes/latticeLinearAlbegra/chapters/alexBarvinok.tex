@@ -1,0 +1,247 @@
+\chapter{Book: Integer Points in Polyhedra}
+
+Most text/math came from \cite{barvinokzurichbook}.
+
+\begin{definition}
+Let V be a vector space, then $\Lambda \subset V$ is a \dw{lattice} if
+\begin{enumerate}
+	\item $\Lambda$ is an additive subgroup of V w.r.t +.
+	\item $\Lambda$ is discrete: A) every bounded set B in V, the intersection $B \cap \Lambda$ is finite OR B) there is a neighborhood of the orgin that does not contain any lattice point other than the origin.
+	\item $span(\Lambda) = V$.
+\end{enumerate}
+\end{definition}
+ 
+
+\begin{lemma}
+Let $\Lambda \subset V$ be a lattice and $L \subset V$ a vector subspace spanned by some points from $\Lambda$. Then among all the lattice points that are not in L there exist a bpoint v closest to L. That is, ther exist a point v such that
+
+$v \in \Lambda - L; dist(V, L) \leq dist(w, L) \; \forall w \in \Lambda - L$
+
+\begin{proof}
+Let k = dim(L), and let $u_1, \dots, u_k$ be a basis for L consisting of lattice points in $\Lambda$. Define (not this is not the fundamental parallelepiped b/c of the 1.
+\begin{center}
+	$\Pi = \{ \sum_{i=1}^{k} \lambda_i u_i: 0 \leq \lambda_i \leq 1 \}$
+\end{center}
+Pick a $\rho$ large enough so that $\Pi_p = \{ x \in V : dist(x, \Pi) \leq \rho \}$ contains a lattice point not in L. B/c $\Lambda$ is discrete $\Pi_p \cap \Lambda$ is finite. Out of all the points in  $\Pi_p \cap (\Lambda - L)$ let v be the closest to $\Pi$. It is clear $dist(v, \Pi) \leq dist(a, \Pi) \; \forall a \in \Lambda - L$. But WTS $dist(v, L) \leq dist(w, L) \; \forall w \in \Lambda - L$. For a contradiction assume such a w exist with $>$.
+
+Let $x\in L$ be the closest point to w (so then dist(w, x) = dist(w, L)). Because $x \in L$ write x in the basis:
+\begin{align*}
+	x = & \sum \alpha_i u_i = u + y \; where \\
+	u = & \sum \floor{\alpha_i} u_i  \\
+	y = & \sum \floorc{\alpha_i} u_i  
+\end{align*}
+Note that $u \in \Lambda \cap L; y \in \Pi; w - y \in \Lambda - L$. Thus
+\begin{align*}
+	dist(w - u, \Pi) & \leq dist(w - u, x - u) (b/c x-u \in \Pi) \\
+				  & = dist(w, x) \\
+				  & = dist(w, L) \\
+				 &  < dist(v, L) \text{assumption for a contradiction} \\
+				& \leq dist(v, \Pi).
+\end{align*}
+but v (not w-u) is the closest point to $\Lambda$, a contradiction.
+\end{proof}
+\end{lemma}
+
+
+\begin{corollary}
+Let $\Lambda \subset V$ be a lattice and $L \subset V$ a vector subspace spanned by some points from $\Lambda$. Let $V = L \bigoplus W$, and $pr: V \to W$ be the project with the kernel L. Then $pr(\Lambda)$ is a lattice in W.
+\end{corollary}
+\begin{proof}
+It is clear $\Lambda_1 = pr(\Lambda)$ is an additive subgroup in W which spans W as a vector space. By the last lemma, there exist the minimum positive distance from a point in $\Lambda - L$ to L.  So there exist the minimum positive distance from a point in $\Lambda_1 - \{0\}$ to the origin in W. This shows that $\Lambda_1$ is discrete. Not that if L is not spanned by lattice points, then $\Lambda_1 = pr(\Lambda)$ may get everywhere dense in W, this is why we assume L is spanned by lattice points.
+\end{proof}
+
+
+
+
+
+\begin{theorem}(The basis representation)
+let dim(V) = d > 0. 
+
+1)There exist vectors $u_1, \dots, u_d$ in $\Lambda$ such that every $u \in \Lambda$ admits a unique decomposition:
+\[  u = \sum m_i u_i \text{ where } m_i \in \Z \]
+The set $u_i, \dots, u_d$ is called a basis for $\Lambda$.
+
+
+2) Let $u_1, \dots, u_d$ be a basis for $\Lambda$ and let
+\[  \Lambda = \{ \sum m_i u_i \text{ where } m_i \in \Z \} \]
+then $\Lambda \subset V$ is a lattice.
+\end{theorem}
+
+\begin{proof}
+1) By induction on d. If d = 1, V = $\R$. B/c $\Lambda$ is discrete, pick the smallest positive number  $a \in \Lambda$. Show every point in the lattice is a multiple of a: let x be a lattice point and write $x = ma, m\ in \R$. Then $x = \floor{m}a + \floorc{m}a$. By subtraction, $\floorc{m}a \in \Lambda$ but $\floorc{m}  < 1$, so $\floorc{m} = 0$. So every lattice point is a integer mult. of a.
+
+Let d > 1. Pick any d-1 linearly indepen. points and let L be the subspace spanned by those points. Hence dimL = d-1 and $\Lambda_1 = \Lambda \cap L$ is a lattice in L. B y the induction hypothesis, there is a basis $u_1, \dots, u_{d-1}$ of $\Lambda_1$. By a lambda above, there is a vector $u_d \in \Lambda -L$ such that $dist(u_d, L) \leq dist(u,L) \; \forall u \in \Lambda -L$.
+
+claim: $u_1, \dots, u_{d-1}, u_d$ is a basis of $\Lambda$. Pick any $u \in \Lambda$ write u as a linear comb: $u = \sum^d \alpha_i u_i$. WTS $\alpha_d \in \Z$. 
+
+For a contradiction, assume $\alpha_d \not \in \Z \; so \; \floorc{\alpha_d} > 0$. Then the point $v = u - \floor{\alpha_d} u_d  = \floorc{\alpha_d}u_d + \sum^{d-1} \alpha_i u_i \in \Lambda - L$. Then
+\begin{displaymath}
+	dist(v, L) = dist(\floorc{\alpha_d}u_d, L) = \floorc{\alpha_d}dist(u_d, L) < dist(u_d, L)
+\end{displaymath}, a contradiction. Now, $\alpha_1, \dots, \alpha_{d-1}$ are integers too because the point $u - \alpha_d u_d$ is a lattice point.
+
+
+2) Let $T: \R^d \to V; T(\alpha_1, \dots, \alpha_d) = \sum^d \alpha_i u_i$. Then $\Lambda = T(\Z^d)$. B/c T is an invertible linear transformation, $\Lambda$ is a discrete additive subgroup of V which spans V.
+\end{proof}
+
+
+\begin{lemma}
+\label{latticeParallelepiped}
+	Let $\Pi$ be a fundamental parallelepiped (1/2 open) of $\Lambda$. Then every point $x \in V$ can be uniquely written as $x =  y + u$ where y is in the fun. parallelepiped and u is a lattice point.
+\end{lemma}
+\begin{proof}
+Let $u_1, \dots, u_d$ be a basis for the lattice. that spans the parallelepiped. Write $x = \sum a_i u_i; a_i \R$. Write $y = \sum \floorc{a_i}u_i; u = \sum \floor{a_i}u_i$.
+
+Now show this is unique. Let $x = y_1 + u_1 = y_2 + u_2$, then $y_1 - y_2 = u_2 - u_1 \in \Lambda$ So $y_1 - y_2$ can be written as an integer comb. of the lattice basis vectors, AND $u_2 - u_1$ is written as a fractional $< 1$ comb. of the lattice basis, hence $u_2 - u_1 = 0$. And $y =y, u=u$ follows.
+
+\end{proof}
+
+
+
+\begin{theorem}
+\label{detVolumeLimit}
+	All the fundamental parallelepipeds (1/2 open) $\Pi$ of $\Lambda$ have the same volume, called the determinant of $\Lambda$ written $det \Lambda$. Let $B_\rho$ be a all of a radius of $\rho$ centered at the origin. Then
+\begin{displaymath}
+	lim_{p \to \infty} \frac{|B_\rho \cap \Lambda|}{vol B_\rho} = 1/det \Lambda
+\end{displaymath}
+\end{theorem}
+
+\begin{proof}
+Pick a fund. para. $\Pi$. the translates $\Pi + u: u\in \Lambda$ cover V w/o overlapping. Let $\Pi \subset B_\alpha$ for some $\alpha > 0$. Pick $\rho > \alpha$, and let $X_\rho = \cup_{u \in B_\rho} (\Pi | u)$. Then it is clear $X_\rho \subset B_{\rho + \alpha}$. 
+
+Now show $B_{\rho - \alpha} \subset X_\rho $. Let $x \in B_{\rho - \alpha}$, the it has to be covered by some translation $\Pi + u$ for $u\in \Lambda \subset B_\rho$. Then
+
+\begin{displaymath}
+	vol B_{\rho - \alpha} \leq vol X_\rho = | B_\rho \cap \Lambda| vol \Pi \leq vol B_{\rho + \alpha}
+\end{displaymath}
+Because 
+\begin{displaymath}
+	lim_{\rho \to \infty} \frac{vol B_{\rho +/- \alpha}}{vol B_\rho} = 1
+\end{displaymath}
+we have that 
+\begin{displaymath}
+	lim_{p \to \infty} \frac{|B_\rho \cap \Lambda|}{vol B_\rho} = 1/vol \Pi
+\end{displaymath}
+
+More generally, for any a in V with $\alpha = \norm{a}$, we have the containment
+\begin{displaymath}
+	a + (B_{\rho - \alpha} \cap \Lambda) \subset B_\rho \cap (a + \Lambda) \subset a + (B_{\rho + \alpha} \cap \Lambda)
+\end{displaymath}
+Which implies 
+\begin{displaymath}
+	|B_{\rho - \alpha} \cap \Lambda| \leq |\subset B_\rho \cap (a + \Lambda) | \leq |\subset(B_{\rho + \alpha} \cap \Lambda|
+\end{displaymath}
+and hence 
+\begin{displaymath}
+	lim_{\rho \to \infty} \frac{|B_{\rho} \cap (a+\Lambda) |}{vol B_\rho} = 1/det \Lambda
+\end{displaymath}
+\end{proof}
+
+
+\begin{theorem}(Volume and lattice point count). Let $\Lambda_o \subset \Lambda$ be lattices and let $\Pi$ be a fund. paallelepiped of $\lambda_o$. Then the sets $\Pi \cap \Lambda$ contains each coset $\Lambda / \Lambda_o$ representative exactly once. Also
+	
+\begin{displaymath}
+	 | \Pi \cap \Lambda | = | \Lambda / \Lambda_o | = det \Lambda_o / det \Lambda
+\end{displaymath}
+\end{theorem}
+
+\begin{proof}
+	By lemma \ref{latticeParallelepiped} every $x \in \Lambda$ has a unique representation $x = y + u; y \in \Pi; u \in \Lambda_o$. But $y \in \Lambda$ so $y = x mod \Lambda_o$. Thus $ | \Pi \cap \Lambda | = | \Lambda / \Lambda_o | $.
+
+Let S be a set of all the cosets, $|S| =| \Lambda / \Lambda_o | $. Because $\Lambda = \cup_{a \in S} (a + \Lambda_o),$ we have that $|B_\rho \cap \Lambda| = \cup _{a \in S} ( B_\rho \cap (a + \Lambda_0)).$
+
+By theorem \ref{detVolumeLimit}, we have that 
+\begin{displaymath}
+	 lim_{\rho \to \infty} \frac{|B_\rho \cap (a+\Lambda_o) |}{vol B_\rho} = 1/det \Lambda_o \\
+ 	 lim_{\rho \to \infty} \frac{|B_\rho \cap \Lambda|}{vol B_\rho} = 1/det \Lambda.
+\end{displaymath}
+Then but each $a + \Lambda_0$ is disjoint and 
+\begin{displaymath}
+	 lim_{\rho \to \infty} \frac{\cup_{b \in S} B_\rho \cap  (b+\Lambda_o)}{B_\rho \cap (a + \Lambda_0)} = det \Lambda_0 /det \Lambda
+\end{displaymath}
+for any fixed $a \in S$. Hence $B_\rho \cap (a + \Lambda_0)$ must be the same for each $a$, hence the LHS is equal to $|S|$.
+\end{proof}
+
+\begin{remark}
+	In the last result, let $V=\R^d, \Lambda=\Z^d$ and $\Lambda_0$ be the lattice generated by some linearly independent integer vectors $u_1, \dots, u_d$. Then the number of integer points in the fun. parallelepiped is equal to the volume of the parallelepiped!!!
+\end{remark}
+
+
+\section{Minkowski Convex Body Theorem}
+
+
+\begin{theorem}(Blichfeldt's Theorem)
+ $\Lambda \subset V$ be a lattice and $X \subset V$ be a Lebesgue measurable set sucht that $\vol X > \det \Lambda$. Then there exist two distinct points $x, y \in X$ s.t. $x - y \in \Lambda$
+\end{theorem}
+\begin{proof}
+	Pick a fun. parallelepiped $\Pi$ of $\Lambda$, so $\vol \Pi = \det \Lambda$. For each $u \in \Lambda$ let $X_u = \{ x \in \Pi : x + u \in X\}$. In words, we consider the translates $\Pi + u : u \in \Lambda$ which cover V w/o overlapping . Then for every translate, we find the intersection $(\Pi + u)\cap X$ and get $X_u$ by translating i5 back into $\Pi$ by $-u$.
+
+B/c $(\Pi+ u) \cap X$ cover X w/o overlapping we have 
+\[ \sum_{u \in \Lambda} \vol X_u = \sum_{u \in \Lambda} \vol ( (\Pi + u) \cap X) = \vol X \]
+
+Claim: some sets $X_u, X_v, v \neq u$ must intersect. For a contradiction, assume all the sets are disjoint, then
+\[ \vol (\cup_{u \in \Lambda} X_u) = \sum_{u \in \Lambda} X_u = \vol X > \vol \Pi \], which is a contradiction b/c \[ \cup_{u \in \Lambda} X_u \subset \Pi \].
+
+This shows that there are two lattice pints $u \neq v$ and a point $a$ s.t. $a \in X_v \cap X_u$. In other words, $a+u \in X_u$, and $a + v \in X_v$. Let $x = a + u; y = a + v$, let us obtain two distinct points from X s.t. $ x-y=u-v$ is a non-zero lattice point.
+\end{proof}
+
+
+
+\begin{theorem}(Minkowski First Convex Body Theorem)
+Let $B \subset V$ be a Labesgue measurable set such that the following holds
+\begin{enumerate}
+	\item for every $x, y \in B$ we have $(x+y)/2 \in B$
+	\item for every $x \in B$ we have $-x \in B$
+	\item $vol B > 2^d \det \Lambda$ where it is a lattice in V.
+\end{enumerate}
+Then B contains a non-zero point from $\Lambda$. Moreover, if B is compact, the the last condidtion can be replaced by $vol B \geq 2^d \det \Lambda$ 
+\end{theorem}
+\begin{proof}
+Let $X = 1/2 B = \{ 1/2 * x : x \in B \}$. Then \[ \vol X = \frac{1}{2^d} \vol B = \det \Lambda > 1.  \]
+
+By Blichfeldt's Theorem, there are two points $x, y \in B$ s.t. $u = 1/2 x - 1/2 y$ is a non-zero lattice point. Rewrite $u = 1/2 x + 1/2 (-y)$ and note $-y \in B$ we have the $u \in B$.
+
+Now assume B is compact and $\vol B = 2^d \det \Lambda$. Then for every $\epsilon > 0$, the set 
+\[ B_\epsilon =\{ (1+\epsilon)x : x \in B\} \] satisfies the condidtions of the theorem and \[\vol B_\epsilon = (1+\epsilon)^d \vol B > 2^d \det \Lambda. \] Hence $B_\epsilon$ contains a non-zero lattice point $u_\epsilon$. A limit point $u$ of $\{u_\epsilon\}$ is a non-zero lattice point in B.
+\end{proof}
+
+
+
+\section{Basis Reduction}
+
+Let $u_1, \dots, u_k$ be a basis. Let $L_0 = \{0\}, L_k = span(u_1, \dots, u_k)$. Let $w_k$ be the orthogonal complement of the projection of $u_k$ onto $L_{k-1}$. The vectors $w_1, \dots w_k$ are the Gram-Schmidt orthogonalization of the u's w/o normalization: $dist(u_k, L_{k-1}) = \norm{w_k}$.
+
+Note that $\det \Lambda = \Pi_{k=1}^d \norm{w_k}.$  Define $\Lambda_k = \Lambda \cap L_k$, and $\det \Lambda_k = \Pi_{i=1}^k \norm{w_i}.$
+
+
+\subsection{weakly reduced}
+
+Write $u_k = w_k + \sum_{i=1}^{k-1} \alpha_{ij}w_i$ for real $\alpha$.
+
+The basis is weakly reduced iff $|\alpha_{ij}| \leq 1/2$
+
+If $|\alpha_{ij}| > 1/2$, replace $u'_k = u_k - m_{ki}u_i$ where m is the integer s.t. $|\alpha_{ki} - m_{ki} | \leq 1/2$. 
+
+It is clear $u_1, \dots, u_{k-1}, u'_k, u_{k+1}, \dots, u_d$ is still a bnasis for $\Lambda$. Also, the subspaces $L_0, \dots, L_k$ and the vectors $w_1, \dots, w_k$ do not change. On the $\alpha_{kj}$ with $j \leq i$ change and $|\alpha'_{ki} | = |\alpha_{ki} - m_{ki} | \leq 1/2$. So we have to apply this update at most $d(d-1)/2$ times (lower triangular).
+
+\subsection{reduced}
+
+A basis $u_1, \dots, u_k$ is reduced iff it is weakly reduced and \[dist^2(u_k, L_{k-1}) \leq 4/3 dist^2(u_{k+1}, L_{k-1}; k=1, \dots, d-1\] This means that $u_{k+1}$ is not much closer to $L_{k-1}$ than $u_k$.
+
+
+\subsection{Algorithm}
+
+Start with $u_1, \dots, u_k$.  
+Make it weakly reduced.
+If it is not reduced, (the condition above is false for some k) then change the order of the basis vectors switching $u_k$, and $u_{k+1}$. Now the basis may not be weakly reduced, so start over.
+
+\subsection{Remarks}
+
+
+\begin{corollary}
+Let $u_1, \dots, u_d$ be a reduced basis of $\Lambda$. Then
+\[ \Pi_{i=1}^d \norm{u_i} \leq 2^{d(d-1)/4} \det \Lambda. \]
+\end{corollary}
+
+\begin{corollary}
+Let $u_1, \dots, u_d$ be a reduced basis of $\Lambda$. Let \[ \lambda = min_{u \in \Lambda - \{0\}} \norm{u} \] be the min. length of a non-zero vector from $\Lambda$. Assume that $\norm{u} \leq \beta \lambda$ for some $u \in \Lambda$ and some $\beta \geq 1$. Then in the representation $u = \sum_1^d m_i u_i$ one must have \[ |m_k| \leq 2^{(d-1)/2} (3/2)^{d-k} \beta \leq 3^d \beta; \; k = 1, \dots d.\]
+\end{corollary}

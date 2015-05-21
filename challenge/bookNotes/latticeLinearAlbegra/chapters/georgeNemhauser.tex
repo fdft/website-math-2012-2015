@@ -1,0 +1,560 @@
+ \chapter{Book: Integer and Combinatorial Optimization}
+
+Most text/math came from \cite{georgeNemhauserBook}.
+
+
+\section{Euclidean Algorithm}
+
+
+\begin{algorithm}                      
+\caption{Euclidean Algorithm}
+\label{alg:EuclideanAlgorithm}
+\begin{algorithmic}                    
+\REQUIRE $b \leq a$.
+\ENSURE $c = gcd(a,b)$
+\STATE $(c_{-1}, c_0) =(a, b)$
+\STATE $(p_{-1}, p_0) =(1, 0)$
+\STATE $(q_{-1}, q_0) =(0, 1)$
+\STATE $t=1$
+\STATE $d_t = \floor{c_{t-2}/c_{t-1}}$
+\WHILE{ $c_t \neq 0$ }
+	\STATE $c_t = c_{t-2} - d_t c_{t-1}$
+	\STATE $p_t = p_{t-2} +d_tp_{t-1}$
+	\STATE $q_t = q_{t-2} + d_tq_{t-1}$
+	\STATE $t = t +1$
+	\STATE $d_t = \floor{c_{t-2}/c_{t-1}}$
+\ENDWHILE 
+
+	\STATE $T = t$
+\RETURN $gcd(a,b) = c_{T-1}$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{corollary}
+For $t = -1\dots T$ we have that 1) $c_t = (-1)^{t+1}(p_ta - q_tb)$;  2) $p_tq_{t+1} - p_{t+1}q_t = (-1)^{t+1}$; 3) $gcd(p_t,q_t) = 1$; 4) $a/b = q_T/p_T$
+\end{corollary}
+\begin{proof}
+1) by induction: for t=-1, 0 it is clear by how we define p, t, etc.
+assume it is true up to some $t-1$. Then
+\begin{align*}
+	c_t  &= c_{t-2} - d_tc_{t-1} \\
+		&= (-1)^{t-1}(p_{t-2}a - q_{t-2}b) - (-1)^td_t(p_{t-1}a - q_{t-1}b) \\
+		&= (-1)^{t+1}[(p_{t-2} + d_t p_{t-1})a - (q_{t-2} +d_tq_{t-1}) b] \\
+		&= (-1)^{t+1}(p_ta - q_tb)
+\end{align*}
+
+2) by induction again
+
+3) b/c $p_{t-1}q_t - p_tq_{t-1} = (-1)^t$ and $p,d > 0$, we have the $gcd(p_t, q_t)  = 1$
+
+4) b/c $c_T = 0 = p_Ta - q_Tb$, $a/b = q_T/p_T$
+\end{proof}
+
+So the EA above gives the gcd AND the extended result.
+
+\section{Hermite Normal Form}
+
+
+\begin{definition}
+A is an $m\times n$ inteer matrix. The lattice $L(A) = \{Ax : x \in \Z^n\}$
+\end{definition}
+ 
+\begin{definition}
+C is unimodular if it is integer and $|det C| = 1$.
+\end{definition}
+
+
+\begin{lemma}
+A is integer, C is unimodular, then $L(AC) = L(A)$.
+\end{lemma}
+\begin{proof}
+It is enough to show that $\{Cw : w \in \Z^n\} = \{w: w \in \Z^n\}$. 
+
+$\subseteq$: C is integer, so $Cw \in \Z^n$.
+
+$\supseteq$: C is unimodular, so $C^{-1}$ is integer matrix so $C^{-1}w$ is integer and so $C(C^{-1}w)$ is in the RHS.
+\end{proof}
+
+\begin{definition}
+$m \times m$ matrix H is in Hermite normal form if 
+\begin{enumerate}
+	\item H is lower triangular: $h_{ij} = 0 $ for $i < j$.
+	\item $h_{ii} > 0$
+	\item $h_{ij} \leq 0$ and $|h_{ij}| < h_{ii}$ for $i>j$. So the off diag is negative and the elements on the diagonal is the largest number per row absolutely. 
+\end{enumerate}
+\end{definition}
+
+
+\begin{theorem}(Main HNF theorem)
+Let A be a $m \times n$ matrix and let A have full row rank (note: $m \leq n$), then there exist an $n \times n$ unomodular matirx C s.t.  $AC  = (H, O)$ where H is the HNF and $H^{-1}A$ is an integer matrix.  Sometimes we will write $C = (C_1, C_2)$ where $C_1$ is a $n \times m$ and $C_2$ is a $n\times (n-m)$ matrix. The proof is in the polynomial-time algorithm.
+\end{theorem}
+
+
+\begin{corollary}
+L(H) = L(A).
+\end{corollary}
+
+
+
+\begin{definition}
+If L(A)  = L(B) and B is nonsingular, then B is a basis for the lattice L(A). Every full row rank matrix A has a basis.
+\end{definition}
+
+
+
+\begin{theorem}(Linear Equation Integer Feasibility Problem)
+Let $S = \{x \in \Z^n : Ax = b\}$. \\ 1) $S \neq \emptyset$ iff $H^{-1}b \in \Z^n$ \\ 2) if $S \neq \emptyset$ then every solution in S is in the form $x = C_1H^{-1}b + C_2z, z \in Z$
+\end{theorem}
+
+\begin{proof}
+1) $\Rightarrow$: let Ax = b. Then $ACw = b$ for $x = Cw, w \in Z^n$. Then $(H,O)w = b$
+
+$\Leftarrow$: Let $w =  H^{-1}b$, then let $x = Cw$.
+
+2)  \begin{align*}
+	S &= \{x \in \Z^n : Ax = b\} \\
+	   &= \{x: x = Cw, ACw = b, w \in Z^n \} \\
+	   &= \{x: x = Cw, (H,O)w = b, w \in Z^n \} \\
+	   &= \{x: x = C_1w_1 + C_2w_2, Hw_1 = b, w_1 \in Z^m, w_2 \in \Z^{n-m}  \}
+\end{align*}
+\end{proof}
+
+
+\begin{example}
+Find integer solutions to 
+ \begin{align*}
+	2x_1 + 6x_2 + x_3 & = 7 \\
+	4x_1 + 7x_2 + 7x_3 & = 4
+\end{align*}
+$H = \left(\begin{matrix}
+	 1 & 0 \\
+	-3 & 5
+	\end{matrix}\right), 
+H = 1/5\left(\begin{matrix}
+	 5 & 0 \\
+	3 & 1
+	\end{matrix}\right) , 
+C = \left(\begin{matrix}
+	 1 & 3  &-7 \\
+	 0 &-1  & 2 \\
+	-1 & 0  & 2 
+	\end{matrix}\right)
+$
+
+The solution space is not empty b/c $H^{-1}b = \binom {7} {5} \in \Z^2$.
+
+The general solution is $C_1 \binom {7} {5} + C_2w_2$ which is 
+\[
+	\left(\begin{matrix}
+	1 & 3\\
+	0 & -1\\
+      -1& 0
+	\end{matrix}\right) \binom{7}{5} + 
+	\left(\begin{matrix}
+	-7\\
+	2\\
+      2
+	\end{matrix}\right)w_2
+\]
+
+\end{example}
+
+
+
+
+\begin{corollary}(Integer Farkas Lemma)
+Either $S \neq \emptyset$ or exclusively there exist $u \in \R^m$ s.t. $uA \in \Z^m, ub \not \in \Z^m$.
+\end{corollary}
+
+\begin{proof}
+Both cannot be true because $uAx = ub$ would be a contradiction. If S is empty, then $H^{-1}b \not \in \Z^m$. Let the ith coefficient of $H^{-1}b$ not be integer then take u to be the ith row of $H^{-1}$
+\end{proof}
+
+
+\begin{lemma}
+Let $A = (a_1, \dots, a_n)$ be an $m \times n$ matrix, $gcd(a_{is}, a_{it}) = r, pa_{is} + qa_{ir} = r$. Then exists an $n \times n$ unimodular integer matrix C s.t. $AC = A'$ where
+
+\[	a'_l = a_l for l \neq s, t \]
+\[	a'_s = pa_s + qa_t \]
+\[	a'_t = -\frac{a_{it}}{r}a_s + \frac{a_{is}}{r}a_t \]
+
+Note: $a'_{is} = r, a'_{it}= 0.$ So we just perfomed elementary column operations so that $a_{is} \leftarrow gcd(a_{is}, a_{it}), a_{it} \leftarrow 0$ ($s < t$).
+\end{lemma}
+\begin{proof}
+Let C be the identity matrix with $c_{ss} = p, c_{ts} = q, c_{st} = -a_{it}/r, c_{tt}= a_{is}/r$. Then $AC = A'$ and $det C = pa_{is}/r + qa{it}/r = 1$.
+\end{proof}
+
+\section{Hermite Normal Form Algorithm}
+
+
+
+\begin{algorithm}                      
+\caption{HNF Algorithm}
+\label{alg:HNFAlgorithm}
+\begin{algorithmic}                    
+\STATE $i = 1$
+\STATE 1) work on row i. Set $j = i+1$
+\STATE 2) work on row i and columsn i and $j > i$. If $a_{ij} = 0$ do nothing. Else use the EA to find $r = gcd(a_{ii}, a_{ij})$, and p, q relatively prime s.t. $pa_{ii}+ qa_{ij} = r$. Set $A = AC$ where C is the unimodular matrix described in the last lemma with $s = i, t=j$. If $j < n$ set $j = j+1$ and return to step 2, else goto step 3 ($j=n$).
+\STATE 3) work on row i and column i. If $a_{ii} < 0$ multiply column i by $-1$.
+\STATE 4) work on row i and column $j < i$. Set $A = AC$ where C replaces column $a_j$ by $a_j - \ceil{\frac{a_{ij}}{a_{ii}}}a_i$. If $j = i-1$ then increase i. If $i > m$ stop, else goto step 1. If $j < i-1$, then increase j and goto step 4.
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{proof}(the NHF Alg. is correct)
+All the operations performed are column operations corresponding to right multiplication by a unimodular matrix. Hence the produce C of these matrices is unimodular. Let $H' =AC$. Note that after step 2, $h'_{ij} = 0$ for all $j > i$; after step 3, $h'_{ii} \geq 0$; and after step 4 $h'_{ij} < 0$ and $|h'_{ij}| < h'_{ii}$ for $j < i$ unless $h'_{ii} = 0$. These values are never changed in later steps. Hence we only need to show that after step 2 for row i, $|h'_{ii}| > 0$.
+For a contradiction, assume $h'_{jj} > 0$ for $j < i$ and $h'_{ii} = 0$. Let $A_1$ be the first i rows of A. Then let $H^* = A_1 C^*$ where $C^*$ is the unimodular matrix produced so far. Note $h^*_{kj} = 0$ for $k \leq i$ and $j \geq i$. Hence rank($H^*$) = i-1. So $rank(A_1) = rank(A_1C^*) = i-1$, which contradicts rank(A) = m.
+\end{proof}
+
+The number of iterations of the NHF is polynomially bounded, it is not known whether the size of the numbers is polynomially bounded. The numbers can be very large.
+
+\begin{example}
+
+
+\[
+A= \left(\begin{matrix}
+	2 & 6 & 1 \\
+	4 & 7 & 7 \\
+	0 & 0 & 1
+\end{matrix}\right) \;\;\;\;
+\begin{matrix}
+	i=1, j=2 \\
+	(a_{11}, a_{12}) = 2, 6 \\
+	(p, q) = 1, 0; r=2 \\
+\end{matrix}  \;\;\;\;
+C^1= \left(\begin{matrix}
+	1 & -3 & 0 \\
+	0 & 1 & 0 \\
+	0 & 0 & 1
+\end{matrix}\right)
+\]
+
+
+\[
+A= \left(\begin{matrix}
+	2 & 0 & 1 \\
+	4 &-5 & 7 \\
+	0 & 0 & 1
+\end{matrix}\right) \;\;\;\;
+\begin{matrix}
+	i=1, j=3 \\
+	(a_{11}, a_{13}) = 2, 1 \\
+	(p, q) = 1, 0; r=1 \\
+\end{matrix}  \;\;\;\;
+C^2= \left(\begin{matrix}
+	0 & 0 & -1 \\
+	0 & 1 & 0 \\
+	1 & 0 & 2
+\end{matrix}\right)
+\]
+
+\[
+A= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	7 & -5 & 10 \\
+	1 & 0 & 2
+\end{matrix}\right) \;\;\;\;
+\begin{matrix}
+	i=1, j=1, no-change \\
+	i=2, j=3 \\
+	(a_{22}, a_{23}) = -5, 10 \\
+	(p, q) = -1, 0; r=5 \\
+\end{matrix}  \;\;\;\;
+C^3= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	0 & -1 & -2 \\
+	0 & 0 & -1
+\end{matrix}\right)
+\]
+
+\[
+A= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	7 & 5 & 2 \\
+	1 & 0 & -2
+\end{matrix}\right) \;\;\;\;
+\begin{matrix}
+	i=2, j=2, no-change\\
+	i=2, j = 1 \\
+\end{matrix}  \;\;\;\;
+C^4= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	-2 & 1 & 0 \\
+	0 & 0 & 1
+\end{matrix}\right)
+\]
+
+\[
+A= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	-3 & 5 & 0 \\
+	1 & 0 & -2
+\end{matrix}\right) \;\;\;\;
+\begin{matrix}
+	i=3, j=3 \\
+\end{matrix}  \;\;\;\;
+C^5= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	0 & 1 & 0 \\
+	0 & 0 & -1
+\end{matrix}\right)
+\]
+
+
+\[
+A= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	-3 & 5 & 0 \\
+	1 & 0 & 2
+\end{matrix}\right) \;\;\;\;
+\begin{matrix}
+	i=3, j=1 \\
+\end{matrix}  \;\;\;\;
+C^6= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	0 & 1 & 0 \\
+	-1 & 0 & 1
+\end{matrix}\right)
+\]
+
+
+\[
+A= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	-3 & 5 & 0 \\
+	-1 & 0 & 2
+\end{matrix}\right) \;\;\;\;
+\begin{matrix}
+	i=3, j=2, no-change \\
+\end{matrix}  \;\;\;\;
+H= \left(\begin{matrix}
+	1 & 0 & 0 \\
+	-3 & 5 & 0 \\
+	-1 & 0 & 2
+\end{matrix}\right)
+\]
+
+Finally, $C = \Pi_1^6 C^k = \left(\begin{matrix}
+		1 & 3 & -7 \\
+		0 & -1 & 2 \\
+		-1 & 0 & 2
+\end{matrix}\right)
+$
+\end{example}
+
+We can modify the algorithm to guarantee that the numbers remain small. 
+
+
+\begin{lemma}
+Assume A is square matrix and full rank. let $d_i = \Pi_{k=i}^m h_{kk}$ for $i=1 \dots m$. Then  $d_ie_k \in L(A)$ for $k = i \dots m$.
+\end{lemma}
+
+\begin{proof}
+The vector $x = (d_1A^{-1}) e_k$ is integer b/c $d_1A^{-1}$ is integer. Also $Ax = d_1e_k \in L(A)$. Now note that $h_i, \dots h_m$ (col vectors.) are in the lattice L(A). Then $d_ie_k$ is in the lattice $L(h_i, \dots, h_m) \subseteq L(A)$ (WHY? replace A with  $\hat H = (h_i, \dots, h_m)$ and note that the top $i-1$ rows are zero, so remove these rows to get a square matrix and $\hat H^{-1}$ is now defined and repeat the above argument).
+\end{proof}
+
+
+To apply this lemma, first find $d_1 = det(H) = det(A)$. Add $d_1e_k$ for $k=1\dots m$ to the columns of A. Once you find $h_1$ you can divide and find $d_2$ and then all $d_2e_k$ for $k=2\dots m$ in A and repeat. This allows you to reduce all elements in rows $i \dots m$ modulo $d_i$. With this no intermediate number in the HNF exceeds $2d_1^2$ is absolute value, yet is still a poly-time algo.
+
+If A does not have full row rank, we can find a unimodular $n \times n$ C s.t.
+\[ AC = \left( \begin{matrix} H & 0\\ 0 & 0 \end{matrix}\right) \]
+
+
+
+
+\begin{definition}
+A is $m \times m$ nonsingular integer matrix, there exist unimodular matrices R and C s.t.
+\begin{enumerate}
+	\item $RAC = \Delta$
+	\item $\Delta$ is a diagonal matrix with diagonal entries in $\Z - \{0\}$.
+	\item $\delta_1 | \delta_2 | \dots | \delta_m$
+	\item $\Delta$ is unique and is called the Smith normal form of A.
+\end{enumerate}
+\end{definition}
+
+
+
+\section{Reduced Basis of a Lattice}
+
+
+
+
+\begin{definition}
+Gram-Schmidt Orthogonalization of a basis B
+\begin{enumerate}
+	\item $b^*_1 = b_1$
+	\item $b^*_k =  b_k - \sum_{j=1}^{k-1}\alpha_{ij}b^*j$.
+	\item where $\alpha_{ij} = b^*_jb_j / \norm{b^*_j}^2$ for $i < j$.
+\end{enumerate}
+\end{definition}
+
+
+\begin{remark}
+Gram-Schmidt Orthogonalization of a basis B
+\begin{enumerate}
+	\item GS makes an orthogonal basis $B^*$ but it is NOT normal.
+	\item $b^*_k$ is the component of $b_k$ orthogonal to the subspace generated by $b^*_1, \dots, b^*_{k-1}$.
+	\item $|det(B)| = | det(B^*)| = \Pi_{j=1}^n \norm{b^*_j}$ (WHY: write $B^* = B L$ where L is lower triangular with 1's on the diagonal. The 2nd equality comes from the geometric meaning of det).
+\end{enumerate}
+\end{remark}
+
+
+
+\begin{definition}
+$| det(b_1, \dots, b_k) | = \Pi_{j=1}^k \norm{b^*_k}$ for all $k \leq n$.
+\end{definition}
+
+
+Note that because $b^*_j$ is the component of $b_j$ orthogonal to the subspace generated by $b^*_1, \dots, b^*_{j-1}$ we have that $\norm{b^*_j} \leq \norm{b_j}$. 
+
+Given a full-dim lattice L we know by the GS remark above that |det(B)| as the same value for all basis B of a lattice. Let d(L) be this common value and let $\alpha(B) = \Pi_1^n \norm{b_j}$. Then we have
+
+\begin{remark}(The Hadamard Inequality) For all bases B of L, we have $\alpha(B) \geq d(L)$.
+\end{remark}
+
+
+All of this is related to the shortest vector problem:
+
+
+\begin{theorem}
+Given a full-dim lattice L and a basis B of L, let y be the solution to
+\[ min\{ \norm{Bx} : |x_j| \leq \frac{\alpha(B)}{|det(B)|}, x \in \Z^n-\{0\}\}\]
+Then $v = By$ is the shortest vector in the lattice L.
+\end{theorem}
+\begin{proof}
+Let v = By be the shortest nonzero vector with $y\neq 0$. Use Cramer's rule $|x_j| = |det(B_j)|/|det(B)|$ where $B_j$ has the jth column replaced by v.  
+
+Then by Hadamard's Ineq.: $|det(B_j)| \leq \norm{b_1} \cdots \norm{v} \cdots \norm{b_n}$ but each $b_j \in L$ and so b/c v is the shortest vector $\norm{v} \leq \norm{b_j}$. Then $|det(B_j) | \leq |\alpha(B)|$
+
+Thus, $|x_j| \leq \frac{\alpha(B)}{|det(B)|}$
+\end{proof}
+
+So, now we want to find a basis where $\frac{\alpha(B)}{|det(B)|}$ is small. But first here is a lower bound on the shortest vector:
+
+\begin{theorem}
+If b is in the lattice and nonzero, B is a lattice of L, $B^*$ is the GS, then $\norm{b} \geq min_j \norm{b^*_j}$
+\end{theorem}
+\begin{proof}
+b/c b is in the lattice, write $b = \sum_j^k b_jz_j$ with $z_j$ integer and $z_k \neq 0$ ($k \leq n$). 
+
+Plug in $b_j = b^*_j + \sum_{i=1}^{j-1} stuff \times b^*_i$ to write $b = \sum_j^k b^*_jz^*_j$ and notice that $z^*_k = z_k$. 
+
+Then because the $B^*$ are orthogonal we get: $\norm{b} \geq |z_k| \norm{b^*_k} \geq min_j \norm{b^*_j}$.
+\end{proof}
+
+Note that $B^*$ may not a lattice basis (even if integer) b/c not all the $\alpha_{ij}$ are integer.
+
+
+
+
+\begin{definition}
+Let L be a full dim lattice, B is a basis of L, and $B^*$ is obtained from GS. B is a reduced basis if
+
+1) $\alpha_{ij} \leq 1/2$
+
+2) $\norm{b^*{j+1} + \alpha_{j,j+1}b^*_j}^2 \geq 3/4 \norm{b^*_j}^2$ for j = 1..(n-1).
+\end{definition}
+
+
+\begin{theorem}
+B is a reduced basis for the full dim lattice L then
+\begin{enumerate}
+	\item $\norm{b^*_j}^2 \leq 2 \norm{b^*_{j+1}}$
+	\item $\norm{b_1} \leq 2^{(n-1)/4} d(L)^{1/n}$
+	\item $\norm{b_1} \leq 2^{(n-1)/2} min\{\norm{b}, b \in L - 0\}$
+	\item $\alpha(B) \leq 2^{n(n-1)/4} d(L)$
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+1): b/c B* is orthogonal, be the def. of reduced basis: 
+\[ \norm{b^*{j+1} + \alpha_{j,j+1}b^*_j}^2 = \norm{b^*_{j+1}}^2 + \alpha_{j,j+1}^2 \norm{b^*_j}^2 \geq 3/4 \norm{b^*_j}^2 \]
+
+But $\alpha_{j,j+1}^2 \leq 1/4$, thus $\norm{b^*_j}^2 \leq 2 \norm{b^*_{j+1}}$
+
+2) by (1) $\norm{b^*_j}^2 \geq 2^{-(j-1)} \norm{b_1 = b^*_1}^2$ So then
+
+\[ d(L)^2 = \Pi_{j=1}^n \norm{b^*_j}^2 \leq 2^{-\sum (j-1)}\norm{b_1}^{2n} = 2^{-n(n-1)/2}\norm{b_1}^{2n}\]
+
+3) From 2 we have \[ \norm{b^*_j}^2 \geq 2^{-(j-1)}\norm{b_1}^2 \geq 2^{-(n-1)}\norm{b_1}^2 \]
+Using  the last theorem 
+\[ \norm{b} \geq min_j(\norm{b^*_j}) \geq 2^{-(n-1)/2}\norm{b_1}^2\] for any nonzero b in the lattice.
+
+4) Write $b_j = \sum_1^j \alpha{ij}b^*_j$. B/c B* is orthogonal,
+
+\begin{align*}
+ \norm{b_j}^2 &= \sum_{i=1}^j \alpha_{ij}^2 \norm{b^*_i} (note: \alpha_{jj} = 1)  \\
+ 	& \leq \norm{b^*_j}^2 + 1/4 \sum_{i=1}^{j-1}\norm{b^*_i}^2 (b/c\: \alpha_{ij} \leq 1/2) \\
+	& \leq \norm{b^*_j}^2( 1 + 1/4 \sum_{i=1}^{j-1} 2^{j-1}) ( from\: 1 \norm{b^*_i}^2 \leq 2^{j-i}\norm{b^*_j}^2 \\
+	& \leq 2^{j-1}\norm{b_j^*}^2
+\end{align*}
+
+
+Finally, 
+\[ \alpha(B)^2 = \Pi_{j=1}^n \norm{b_j}^2 \leq (use-above-ineq) = 2^{n(n-1)/2}d(L)^2\]
+\end{proof}
+
+
+The last part of the last theorem gives a way to search for the shortest lattice vector (use the 2nd to last theorem and $\alpha(B)/|det(B)| \leq 2^{n(n-1)/4}$
+
+
+\begin{example}
+\[
+B= \left(\begin{matrix}
+0 & 2 & 1\\
+0&-1 & 2\\
+2& 0 &1
+\end{matrix}\right)
+\]
+Then from the GS we get $b^*_1 = (0,0,2)$ From this, we compute $\alpha_{12}=0, \alpha_{13} =1/2.$ 
+
+Then $b^*_2 = (2,-1,0)$ and we find $\alpha_{23}=0$ which gives $b^*_3 =(1,2,0)$.
+
+We can also check the 2nd condition in a reduced basis. This basis is reduced. 
+
+Now find the shortest vector in the lattice. So we find $Bx$ for every x with $|x_i| \leq \floor{2^3(3-1)/4 = 2}$. So we have to look at $5^3 -1$ different x's and times by B and compute the resulting length. The shortest vector found this way is $Bx = (0,0,2)$.
+\end{example}
+
+\section{Basis Reduce Algorithmm for full dimensional lattice}
+
+This algorithm find a reduced basis for L in polynomial time.
+
+\begin{algorithm}                      
+\caption{Basis Reduction}
+\label{alg:BasisReduction}
+\begin{algorithmic}                    
+\REQUIRE B be a basis of a lattice L
+\ENSURE $c = gcd(a,b)$
+\STATE 1) $(b^*_1, \dots, b^*_n)$ be the GS of B with $\alpha_{ij}= b^*_ib_j/\norm{b^*_i}^2$
+\STATE 2) for j = 2..n, for i=j-1..1, replace $b_j$ with $b_j - \hat \alpha_{ij}b_i$ where $\hat \alpha$ is the integer closest to $\alpha$.
+\STATE 3) If $\norm{b^*_{j+1} + \alpha_{j,j+1}b^*_j}^2 < 3/4 \norm{b^*_j}^2$ for some j, interchange $b_j$, and $b_{j+1}$ and goto step 1 with the new basis B.
+\end{algorithmic}
+\end{algorithm}
+
+
+\section{Simultaneous Diophantine Approximation Feasibility Problem}
+
+
+\begin{definition}
+Simultaneous Diophantine Approximation Feasibility Problem: given rationals $a_1, \dots, a_n, \epsilon$ and integer $K > 0$, decide if there exist integers $q_1, \dots, q_n$ and $0 < p \leq K$ s.t. $|pa_i - q_i| \leq \epsilon$ for i=1..n.
+\end{definition}
+
+\begin{theorem}
+There is a poly-time algorithm which either 1) determines theat SDAF is infeasible OR 2) finds integers $q_1, \dots, q_n$ and $p>0$ s.t.t $|pa_i - q_i| < 2^{n/2}\epsilon(n+1)^{1/2}$ for i=1..n and $p < 2^{n/2}K(n+1)^{1/2}$.
+\end{theorem}
+\begin{proof}
+Let $a=(a_1, \dots, a_n, \epsilon/K) \in \R^{n+1}$ and let $e_i$ be the std unit vector in $\R^{n+1}$. Consider the lattice generated by $(e_1, \dots, e_n, -a)$. For any $(q_1, \dots, q_n, p) \in \Z^{n+1}$ we have $w = \sum_1^n q_ie_i - pa \in L$. If $(q_1, \dots, q_n, p)$ is a solution to SDAF then $|w_i| = |q_i -a_ip| \leq \epsilon$ and for i=1..n and $|w_{n+1}| = |p\epsilon/k| \leq \epsilon$. Hence $\norm{w} \leq \epsilon (n+1)^{1/2}$. 
+
+Now let B be a reduced basis for L with $b_1$ being the 1st column. This can be done in poly-time. 
+
+Recall from part (3) of a theorem above not-too-long-ago that $\norm{b_1} \leq 2^{(n-1)/2} min\{\norm{b}, b \in L - 0\}$. So, IF $\norm{b_1} > 2^{(n-1)/2}\epsilon(n+1)^{1/2}$, then $\norm{b} \geq 2^{-(n-1)/2}\norm{b_1} > \epsilon(n+1)^{1/2}$ for all nonzero b in the lattice. Thus the SDAF has no solution.
+
+IF $\norm{b_1} \leq 2^{(n-1)/2}\epsilon(n+1)^{1/2}$, choose $(q', p') \in \Z^{n+1}$ s.t. $b_1 = \sum_1^n q'_ie_i -p'a$. Now there are two more chases. If $p' \neq 0$, then $(q', p')$ is a solution b/c 
+
+\[ |q'_i -p'a_i| \leq 2^{(n-1)/2}\epsilon(n+1)^{1/2}, i=1, \dots, n\]
+and
+\[ |p'\epsilon/K| \leq 2^{(n-1)/2}\epsilon(n+1)^{1/2} \]
+
+If $p'=0$ then $b_1 = (q'_1, \dots, q'_n, 0)$ and $\norm{b_1} \geq 1$. Thus $2^{(n-1)/2}\epsilon(n+1)^{1/2} \geq 1$ and $p=1, q_i = \floor{a_i}$
+\end{proof}
+
+
